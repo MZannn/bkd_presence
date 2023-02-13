@@ -206,6 +206,22 @@ class HomeView extends GetView<HomeController> {
                             ],
                           ),
                         ),
+                        const SizedBox(
+                          height: 24,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              "Presensi 5 hari terakhir",
+                              style: textTheme.labelMedium,
+                            ),
+                            TextButton(
+                              onPressed: () {},
+                              child: const Text("Lebih banyak"),
+                            )
+                          ],
+                        ),
                       ],
                     ),
                   ),

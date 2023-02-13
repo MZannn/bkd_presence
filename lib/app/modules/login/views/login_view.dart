@@ -122,7 +122,7 @@ class LoginView extends GetView<LoginController> {
                   width: 150,
                   child: ElevatedButton(
                     onPressed: () {
-                      Get.toNamed('/home');
+                      Get.toNamed('/navigator');
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: ColorConstants.mainColor,
