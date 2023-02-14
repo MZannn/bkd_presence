@@ -1,5 +1,9 @@
 import 'package:get/get.dart';
 
+import '../modules/change_password/bindings/change_password_binding.dart';
+import '../modules/change_password/views/change_password_view.dart';
+import '../modules/edit_profile/bindings/edit_profile_binding.dart';
+import '../modules/edit_profile/views/edit_profile_view.dart';
 import '../modules/home/bindings/home_binding.dart';
 import '../modules/home/views/home_view.dart';
 import '../modules/login/bindings/login_binding.dart';
@@ -36,7 +40,20 @@ class AppPages {
     GetPage(
       name: _Paths.navigator,
       page: () => const NavigatorView(),
-      binding: NavigatorBinding(),
+      bindings: [
+        NavigatorBinding(),
+        HomeBinding(),
+      ],
+    ),
+    GetPage(
+      name: _Paths.editProfile,
+      page: () => const EditProfileView(),
+      binding: EditProfileBinding(),
+    ),
+    GetPage(
+      name: _Paths.CHANGE_PASSWORD,
+      page: () => const ChangePasswordView(),
+      binding: ChangePasswordBinding(),
     ),
   ];
 }

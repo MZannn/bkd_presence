@@ -1,5 +1,6 @@
 import 'package:bkd_presence/app/themes/constants.dart';
 import 'package:bkd_presence/app/themes/themes.dart';
+import 'package:bkd_presence/app/widgets/button.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
@@ -117,29 +118,15 @@ class LoginView extends GetView<LoginController> {
                 const SizedBox(
                   height: 36,
                 ),
-                SizedBox(
-                  height: 41,
-                  width: 150,
-                  child: ElevatedButton(
-                    onPressed: () {
-                      Get.toNamed('/navigator');
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: ColorConstants.mainColor,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(
-                          100,
-                        ),
-                      ),
-                      elevation: 0,
-                    ),
-                    child: Text(
-                      "Masuk",
-                      style:
-                          textTheme.labelMedium!.copyWith(color: Colors.white),
-                    ),
+                Button(
+                  onPressed: () {
+                    Get.toNamed('/navigator');
+                  },
+                  child: Text(
+                    "Masuk",
+                    style: textTheme.labelMedium!.copyWith(color: Colors.white),
                   ),
-                )
+                ),
               ],
             ),
           ),

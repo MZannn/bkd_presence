@@ -7,6 +7,8 @@ abstract class Routes {
   static const login = _Paths.login;
   static const profile = _Paths.profile;
   static const navigator = _Paths.navigator;
+  static const editProfile = _Paths.editProfile;
+  static const CHANGE_PASSWORD = _Paths.CHANGE_PASSWORD;
 }
 
 abstract class _Paths {
@@ -15,4 +17,6 @@ abstract class _Paths {
   static const login = '/login';
   static const profile = '/profile';
   static const navigator = '/navigator';
+  static const editProfile = '/edit-profile';
+  static const CHANGE_PASSWORD = '/change-password';
 }

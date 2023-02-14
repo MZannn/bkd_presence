@@ -59,20 +59,25 @@ class ProfileView extends GetView<ProfileController> {
                               ),
                             ),
                           ),
-                          Container(
-                            height: 40,
-                            width: 40,
-                            margin: const EdgeInsets.only(top: 55, left: 55),
-                            decoration: BoxDecoration(
-                              color: Colors.red,
-                              borderRadius: BorderRadius.circular(
-                                30,
+                          GestureDetector(
+                            onTap: () {
+                              Get.toNamed('edit-profile');
+                            },
+                            child: Container(
+                              height: 40,
+                              width: 40,
+                              margin: const EdgeInsets.only(top: 55, left: 55),
+                              decoration: BoxDecoration(
+                                color: Colors.red,
+                                borderRadius: BorderRadius.circular(
+                                  30,
+                                ),
                               ),
-                            ),
-                            child: const Icon(
-                              Icons.edit,
-                              color: Colors.white,
-                              size: 16,
+                              child: const Icon(
+                                Icons.edit,
+                                color: Colors.white,
+                                size: 16,
+                              ),
                             ),
                           ),
                         ],
@@ -110,36 +115,46 @@ class ProfileView extends GetView<ProfileController> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Row(
-                        children: [
-                          SvgPicture.asset("assets/icons/edit.svg"),
-                          const SizedBox(
-                            width: 12,
-                          ),
-                          Text(
-                            "Ubah Password",
-                            style: textTheme.bodyLarge!.copyWith(
-                              color: const Color(0xFF383838),
+                      InkWell(
+                        onTap: () {
+                          Get.toNamed('/change-password');
+                        },
+                        child: Row(
+                          children: [
+                            SvgPicture.asset("assets/icons/edit.svg"),
+                            const SizedBox(
+                              width: 12,
                             ),
-                          ),
-                        ],
+                            Text(
+                              "Ubah Password",
+                              style: textTheme.bodyLarge!.copyWith(
+                                color: const Color(0xFF383838),
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                       const SizedBox(
                         height: 16,
                       ),
-                      Row(
-                        children: [
-                          SvgPicture.asset("assets/icons/exit.svg"),
-                          const SizedBox(
-                            width: 12,
-                          ),
-                          Text(
-                            "Keluar",
-                            style: textTheme.bodyLarge!.copyWith(
-                              color: const Color(0xFF383838),
+                      InkWell(
+                        onTap: () {
+                          Get.toNamed('/login');
+                        },
+                        child: Row(
+                          children: [
+                            SvgPicture.asset("assets/icons/exit.svg"),
+                            const SizedBox(
+                              width: 12,
                             ),
-                          ),
-                        ],
+                            Text(
+                              "Keluar",
+                              style: textTheme.bodyLarge!.copyWith(
+                                color: const Color(0xFF383838),
+                              ),
+                            ),
+                          ],
+                        ),
                       )
                     ],
                   ),
