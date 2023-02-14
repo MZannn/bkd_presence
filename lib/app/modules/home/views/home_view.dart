@@ -99,10 +99,9 @@ class HomeView extends GetView<HomeController> {
                         ),
                         child: Column(
                           children: [
-                            Container(
+                            SizedBox(
                               height: 200,
                               width: double.infinity,
-                              color: Colors.amber,
                               child: GoogleMap(
                                 zoomControlsEnabled: false,
                                 circles: {
