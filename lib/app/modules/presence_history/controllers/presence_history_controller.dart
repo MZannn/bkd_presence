@@ -1,8 +1,6 @@
 import 'package:get/get.dart';
 
 class PresenceHistoryController extends GetxController {
-  //TODO: Implement PresenceHistoryController
-
   final count = 0.obs;
   @override
   void onInit() {
