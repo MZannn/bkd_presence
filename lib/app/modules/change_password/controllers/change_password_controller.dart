@@ -2,7 +2,6 @@ import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 
 class ChangePasswordController extends GetxController {
-  //TODO: Implement ChangePasswordController
   final passwordController = TextEditingController();
   RxBool hiddenPassword = true.obs;
   RxBool hiddenConfirmPassword = true.obs;

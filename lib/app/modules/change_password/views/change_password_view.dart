@@ -1,5 +1,5 @@
-import 'package:bkd_presence/app/themes/constants.dart';
 import 'package:bkd_presence/app/themes/themes.dart';
+import 'package:bkd_presence/app/widgets/custom_app_bar.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
@@ -12,19 +12,8 @@ class ChangePasswordView extends GetView<ChangePasswordController> {
   Widget build(BuildContext context) {
     final textTheme = Themes.light.textTheme;
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Ubah Password'),
-        centerTitle: true,
-        backgroundColor: ColorConstants.mainColor,
-        elevation: 0,
-        leading: IconButton(
-          onPressed: () {
-            Get.back();
-          },
-          icon: const Icon(
-            Icons.arrow_back_ios_new,
-          ),
-        ),
+      appBar: const CustomAppBar(
+        title: "Ubah Password",
       ),
       body: SingleChildScrollView(
         child: Padding(

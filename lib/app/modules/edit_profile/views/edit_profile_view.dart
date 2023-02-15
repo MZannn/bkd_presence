@@ -1,6 +1,6 @@
-import 'package:bkd_presence/app/themes/constants.dart';
 import 'package:bkd_presence/app/themes/themes.dart';
 import 'package:bkd_presence/app/widgets/button.dart';
+import 'package:bkd_presence/app/widgets/custom_app_bar.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
@@ -13,19 +13,8 @@ class EditProfileView extends GetView<EditProfileController> {
   Widget build(BuildContext context) {
     final textTheme = Themes.light.textTheme;
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Edit Profil'),
-        centerTitle: true,
-        backgroundColor: ColorConstants.mainColor,
-        elevation: 0,
-        leading: IconButton(
-          onPressed: () {
-            Get.back();
-          },
-          icon: const Icon(
-            Icons.arrow_back_ios_new,
-          ),
-        ),
+      appBar: const CustomAppBar(
+        title: "Edit Profile",
       ),
       body: SingleChildScrollView(
         child: Padding(

@@ -10,6 +10,8 @@ import '../modules/login/bindings/login_binding.dart';
 import '../modules/login/views/login_view.dart';
 import '../modules/navigator/bindings/navigator_binding.dart';
 import '../modules/navigator/views/navigator_view.dart';
+import '../modules/presence_history/bindings/presence_history_binding.dart';
+import '../modules/presence_history/views/presence_history_view.dart';
 import '../modules/profile/bindings/profile_binding.dart';
 import '../modules/profile/views/profile_view.dart';
 
@@ -51,9 +53,14 @@ class AppPages {
       binding: EditProfileBinding(),
     ),
     GetPage(
-      name: _Paths.CHANGE_PASSWORD,
+      name: _Paths.changePassword,
       page: () => const ChangePasswordView(),
       binding: ChangePasswordBinding(),
+    ),
+    GetPage(
+      name: _Paths.presenceHistory,
+      page: () => const PresenceHistoryView(),
+      binding: PresenceHistoryBinding(),
     ),
   ];
 }

@@ -1,8 +1,8 @@
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class EditProfileController extends GetxController {
-  final nameController = TextEditingController(text: "Jimmy Soedibjo");
+class PresenceHistoryController extends GetxController {
+  //TODO: Implement PresenceHistoryController
+
   final count = 0.obs;
   @override
   void onInit() {

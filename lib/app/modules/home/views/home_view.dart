@@ -250,7 +250,9 @@ class HomeView extends GetView<HomeController> {
                                   style: textTheme.labelMedium,
                                 ),
                                 TextButton(
-                                  onPressed: () {},
+                                  onPressed: () {
+                                    Get.toNamed('/presence-history');
+                                  },
                                   child: const Text("Lebih banyak"),
                                 )
                               ],
