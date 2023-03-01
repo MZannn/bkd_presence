@@ -119,7 +119,7 @@ class LoginView extends GetView<LoginController> {
                 ),
                 Button(
                   onPressed: () {
-                    Get.toNamed('/navigator');
+                    Get.toNamed('/home');
                   },
                   child: Text(
                     "Masuk",

@@ -7,7 +7,7 @@ class HomeController extends GetxController {
   RxDouble longitude = 0.0.obs;
 
   RxBool isLoading = false.obs;
-
+  RxInt selectedIndex = 0.obs;
   late CameraPosition cameraPosition;
   Future<Position> getUserCurrentLocation() async {
     await Geolocator.requestPermission()

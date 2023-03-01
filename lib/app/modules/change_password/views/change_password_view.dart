@@ -1,4 +1,5 @@
 import 'package:bkd_presence/app/themes/themes.dart';
+import 'package:bkd_presence/app/widgets/button.dart';
 import 'package:bkd_presence/app/widgets/custom_app_bar.dart';
 import 'package:flutter/material.dart';
 
@@ -118,6 +119,22 @@ class ChangePasswordView extends GetView<ChangePasswordController> {
                   ),
                 ),
               ),
+              const SizedBox(
+                height: 24,
+              ),
+              Align(
+                alignment: Alignment.center,
+                child: Button(
+                  onPressed: () {},
+                  child: Text(
+                    "Simpan",
+                    style: textTheme.bodyMedium!.copyWith(
+                      color: Colors.white,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ),
+              )
             ],
           ),
         ),
