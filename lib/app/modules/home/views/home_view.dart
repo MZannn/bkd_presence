@@ -1,4 +1,5 @@
 import 'package:bkd_presence/app/modules/profile/views/profile_view.dart';
+import 'package:bkd_presence/app/themes/color_constants.dart';
 import 'package:bkd_presence/app/themes/constants.dart';
 import 'package:bkd_presence/app/themes/themes.dart';
 import 'package:flutter/material.dart';
@@ -115,8 +116,8 @@ class HomeView extends GetView<HomeController> {
                                       circles: {
                                         Circle(
                                           circleId: const CircleId("circle"),
-                                          center: const LatLng(
-                                              -2.215985, 113.898606),
+                                          center: LatLng(Constants.latitude,
+                                              Constants.longitude),
                                           radius:
                                               0.2 * 1000, // convert ke meter
                                           strokeWidth: 1,
@@ -281,7 +282,7 @@ class HomeView extends GetView<HomeController> {
                 );
               },
             ),
-            ProfileView(),
+            const ProfileView(),
           ],
         ),
       ),
@@ -354,7 +355,16 @@ class HomeView extends GetView<HomeController> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () {
+          print(
+            controller.calculateDistance(
+              Constants.latitude,
+              Constants.longitude,
+              controller.latitude.value,
+              controller.longitude.value,
+            ),
+          );
+        },
         elevation: 0,
         backgroundColor: ColorConstants.mainColor,
         child: SvgPicture.asset("assets/icons/presence.svg"),

@@ -1,8 +1,5 @@
-import 'package:flutter/material.dart';
-
-class ColorConstants {
-  ColorConstants._();
-  static Color mainColor = const Color(0xFF1CDC54);
-  static Color redColor = const Color(0xFFF01313);
-  static Color greyColor = const Color(0xFFCDCBCF);
+class Constants {
+  Constants._() {}
+  static double longitude = 113.898606;
+  static double latitude = -2.215985;
 }
