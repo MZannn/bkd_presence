@@ -28,7 +28,7 @@ class Themes {
       bodySmall: GoogleFonts.montserrat(
         fontSize: 12,
         color: Colors.white,
-        fontWeight: FontWeight.w400,
+        fontWeight: FontWeight.w500,
       ),
       labelMedium: GoogleFonts.montserrat(
         fontSize: 14,

@@ -11,8 +11,11 @@ class LoginView extends GetView<LoginController> {
   @override
   Widget build(BuildContext context) {
     final textTheme = Themes.light.textTheme;
-    return Scaffold(
-      body: SafeArea(
+    return Scaffold(body: Obx(() {
+      if (controller.isLoading.value == true) {
+        return const SizedBox();
+      }
+      return SafeArea(
         child: SingleChildScrollView(
           child: Container(
             margin: const EdgeInsets.only(top: 75),
@@ -22,6 +25,7 @@ class LoginView extends GetView<LoginController> {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    Text(controller.deviceId.value),
                     Text(
                       "Login",
                       style: textTheme.titleLarge,
@@ -47,11 +51,12 @@ class LoginView extends GetView<LoginController> {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text("Email", style: textTheme.labelMedium),
+                    Text("NIP", style: textTheme.labelMedium),
                     const SizedBox(
                       height: 8,
                     ),
                     TextFormField(
+                      controller: controller.nipController,
                       decoration: InputDecoration(
                         contentPadding: const EdgeInsets.symmetric(
                           vertical: 8,
@@ -64,7 +69,6 @@ class LoginView extends GetView<LoginController> {
                             color: Color(0xFFA4A4A4),
                           ),
                         ),
-                        hintText: "hello@gmail.com",
                         hintStyle: textTheme.bodyMedium!.copyWith(
                           color: const Color(0xFF666666),
                           fontWeight: FontWeight.w400,
@@ -83,6 +87,7 @@ class LoginView extends GetView<LoginController> {
                     ),
                     Obx(
                       () => TextFormField(
+                        controller: controller.passwordController,
                         obscuringCharacter: "●",
                         obscureText: controller.isHidden.value,
                         decoration: InputDecoration(
@@ -119,7 +124,7 @@ class LoginView extends GetView<LoginController> {
                 ),
                 Button(
                   onPressed: () {
-                    Get.toNamed('/home');
+                    controller.login();
                   },
                   child: Text(
                     "Masuk",
@@ -130,7 +135,7 @@ class LoginView extends GetView<LoginController> {
             ),
           ),
         ),
-      ),
-    );
+      );
+    }));
   }
 }

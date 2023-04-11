@@ -1,3 +1,4 @@
+import 'package:bkd_presence/app/binding/global_binding.dart';
 import 'package:get/get.dart';
 
 import '../modules/change_password/bindings/change_password_binding.dart';
@@ -18,19 +19,25 @@ part 'app_routes.dart';
 class AppPages {
   AppPages._();
 
-  static const navigator = Routes.home;
+  static const home = Routes.home;
   static const login = Routes.login;
 
   static final routes = [
     GetPage(
       name: _Paths.home,
       page: () => const HomeView(),
-      binding: HomeBinding(),
+      bindings: [
+        GlobalBinding(),
+        HomeBinding(),
+      ],
     ),
     GetPage(
       name: _Paths.login,
       page: () => const LoginView(),
-      binding: LoginBinding(),
+      bindings: [
+        GlobalBinding(),
+        LoginBinding(),
+      ],
     ),
     GetPage(
       name: _Paths.profile,

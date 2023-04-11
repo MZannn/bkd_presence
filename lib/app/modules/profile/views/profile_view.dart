@@ -139,7 +139,7 @@ class ProfileView extends GetView<ProfileController> {
                       ),
                       InkWell(
                         onTap: () {
-                          Get.toNamed('/login');
+                          Get.toNamed('/report-change-imei');
                         },
                         child: Row(
                           children: [
@@ -148,7 +148,7 @@ class ProfileView extends GetView<ProfileController> {
                               width: 12,
                             ),
                             Text(
-                              "Keluar",
+                              "change imei",
                               style: textTheme.bodyLarge!.copyWith(
                                 color: const Color(0xFF383838),
                               ),
