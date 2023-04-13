@@ -1,3 +1,4 @@
+import 'package:bkd_presence/app/themes/color_constants.dart';
 import 'package:bkd_presence/app/themes/themes.dart';
 import 'package:bkd_presence/app/widgets/button.dart';
 import 'package:bkd_presence/app/widgets/custom_app_bar.dart';
@@ -11,6 +12,11 @@ class EditProfileView extends GetView<EditProfileController> {
   const EditProfileView({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
+    String? name = Get.arguments['name'];
+    String getInitials(String userName) => userName.isNotEmpty
+        ? userName.trim().split(' ').map((l) => l[0]).take(2).join()
+        : '';
+    getInitials(name!);
     final textTheme = Themes.light.textTheme;
     return Scaffold(
       appBar: const CustomAppBar(
@@ -29,31 +35,69 @@ class EditProfileView extends GetView<EditProfileController> {
                   child: Stack(
                     children: [
                       Container(
-                        height: 90,
-                        width: 90,
+                        height: 100,
+                        width: 100,
                         decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(60),
-                          image: const DecorationImage(
-                            image:
-                                NetworkImage("https://picsum.photos/200/300"),
-                            fit: BoxFit.cover,
+                          borderRadius: BorderRadius.circular(50),
+                          border: Border.all(
+                            color: ColorConstants.mainColor,
+                            width: 2,
+                          ),
+                        ),
+                        child: Center(
+                          child: SizedBox(
+                            height: 90,
+                            width: 90,
+                            child: Obx(
+                              () => ClipRRect(
+                                borderRadius: BorderRadius.circular(50),
+                                child: controller.isEmpty.value == false &&
+                                        controller.file != null
+                                    ? Image.file(
+                                        controller.file!,
+                                        fit: BoxFit.cover,
+                                      )
+                                    : Get.arguments['profilePhotoPath'] == null
+                                        ? CircleAvatar(
+                                            backgroundColor:
+                                                ColorConstants.mainColor,
+                                            child: Text(
+                                              getInitials(name),
+                                              style:
+                                                  textTheme.bodyLarge!.copyWith(
+                                                fontSize: 28,
+                                                color: Colors.white,
+                                              ),
+                                            ),
+                                          )
+                                        : Image.network(
+                                            "https://zandev.site/storage/${Get.arguments['profilePhotoPath']}",
+                                            fit: BoxFit.cover,
+                                          ),
+                              ),
+                            ),
                           ),
                         ),
                       ),
-                      Container(
-                        height: 40,
-                        width: 40,
-                        margin: const EdgeInsets.only(top: 55, left: 55),
-                        decoration: BoxDecoration(
-                          color: Colors.red,
-                          borderRadius: BorderRadius.circular(
-                            30,
+                      GestureDetector(
+                        onTap: () {
+                          controller.pickFile();
+                        },
+                        child: Container(
+                          height: 40,
+                          width: 40,
+                          margin: const EdgeInsets.only(top: 60, left: 60),
+                          decoration: BoxDecoration(
+                            color: Colors.red,
+                            borderRadius: BorderRadius.circular(
+                              30,
+                            ),
                           ),
-                        ),
-                        child: const Icon(
-                          Icons.edit,
-                          color: Colors.white,
-                          size: 16,
+                          child: const Icon(
+                            Icons.edit,
+                            color: Colors.white,
+                            size: 16,
+                          ),
                         ),
                       ),
                     ],
@@ -101,14 +145,14 @@ class EditProfileView extends GetView<EditProfileController> {
                 height: 8,
               ),
               Text(
-                "Email",
+                "Jabatan",
                 style: textTheme.bodyMedium,
               ),
               const SizedBox(
                 height: 8,
               ),
               TextFormField(
-                controller: controller.nameController,
+                controller: controller.positionController,
                 enabled: false,
                 style: textTheme.bodyMedium!.copyWith(
                   fontWeight: FontWeight.w500,
@@ -138,15 +182,14 @@ class EditProfileView extends GetView<EditProfileController> {
                 height: 8,
               ),
               Text(
-                "Bagian",
+                "No Hp",
                 style: textTheme.bodyMedium,
               ),
               const SizedBox(
                 height: 8,
               ),
               TextFormField(
-                controller: controller.nameController,
-                enabled: false,
+                controller: controller.phoneNumberController,
                 style: textTheme.bodyMedium!.copyWith(
                   fontWeight: FontWeight.w500,
                 ),
@@ -156,7 +199,7 @@ class EditProfileView extends GetView<EditProfileController> {
                     vertical: 8,
                   ),
                   filled: true,
-                  fillColor: const Color(0xFFE8E8E8),
+                  fillColor: Colors.white,
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(
                       8,
@@ -177,7 +220,11 @@ class EditProfileView extends GetView<EditProfileController> {
               Align(
                 alignment: Alignment.center,
                 child: Button(
-                  onPressed: () {},
+                  height: 41,
+                  width: 150,
+                  onPressed: () {
+                    controller.editProfile();
+                  },
                   child: Text(
                     "Simpan",
                     style: textTheme.labelMedium!.copyWith(color: Colors.white),

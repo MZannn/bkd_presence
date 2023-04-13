@@ -123,6 +123,8 @@ class LoginView extends GetView<LoginController> {
                   height: 36,
                 ),
                 Button(
+                  height: 41,
+                  width: 150,
                   onPressed: () {
                     controller.login();
                   },

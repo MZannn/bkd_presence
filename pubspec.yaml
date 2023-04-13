@@ -10,6 +10,7 @@ dependencies:
   get: 4.6.5
   shared_preferences: ^2.1.0
   connectivity_plus: ^3.0.3
+  file_picker: ^5.2.9
   shimmer: ^2.0.0
   google_fonts: ^4.0.3
   google_maps_flutter: ^2.2.3

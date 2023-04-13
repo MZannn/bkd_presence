@@ -4,13 +4,20 @@ import 'package:flutter/material.dart';
 class Button extends StatelessWidget {
   final Function() onPressed;
   final Widget child;
-  const Button({super.key, required this.onPressed, required this.child});
+  final double height;
+  final double width;
+  const Button(
+      {super.key,
+      required this.onPressed,
+      required this.child,
+      required this.height,
+      required this.width});
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 41,
-      width: 150,
+      height: height,
+      width: width,
       child: ElevatedButton(
         onPressed: onPressed,
         style: ElevatedButton.styleFrom(

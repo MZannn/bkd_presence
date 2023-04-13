@@ -1,3 +1,4 @@
+import 'package:bkd_presence/app/models/user_model.dart';
 import 'package:bkd_presence/app/themes/color_constants.dart';
 import 'package:bkd_presence/app/themes/themes.dart';
 import 'package:flutter/material.dart';
@@ -8,9 +9,15 @@ import 'package:get/get.dart';
 import '../controllers/profile_controller.dart';
 
 class ProfileView extends GetView<ProfileController> {
-  const ProfileView({Key? key}) : super(key: key);
+  const ProfileView(this.user, {Key? key, UserModel? state}) : super(key: key);
+  final UserModel? user;
   @override
   Widget build(BuildContext context) {
+    String? name = user?.data?.user?.name;
+    String getInitials(String userName) => userName.isNotEmpty
+        ? userName.trim().split(' ').map((l) => l[0]).take(2).join()
+        : '';
+    getInitials(name!);
     final textTheme = Themes.light.textTheme;
     return Scaffold(
       body: Stack(
@@ -47,21 +54,37 @@ class ProfileView extends GetView<ProfileController> {
                       ),
                       Stack(
                         children: [
-                          Container(
+                          SizedBox(
                             height: 90,
                             width: 90,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(60),
-                              image: const DecorationImage(
-                                image: NetworkImage(
-                                    "https://picsum.photos/200/300"),
-                                fit: BoxFit.cover,
-                              ),
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(50),
+                              child: user?.data?.user?.profilePhotoPath == null
+                                  ? CircleAvatar(
+                                      backgroundColor: Colors.white,
+                                      child: Text(
+                                        getInitials(name),
+                                        style: textTheme.bodyLarge!.copyWith(
+                                          fontSize: 28,
+                                          color: ColorConstants.mainColor,
+                                        ),
+                                      ),
+                                    )
+                                  : Image.network(
+                                      "https://zandev.site/storage/${user?.data?.user?.profilePhotoPath}",
+                                      fit: BoxFit.cover,
+                                    ),
                             ),
                           ),
                           GestureDetector(
                             onTap: () {
-                              Get.toNamed('edit-profile');
+                              Get.toNamed('edit-profile', arguments: {
+                                'name': user?.data?.user?.name,
+                                'position': user?.data?.user?.position,
+                                'phoneNumber': user?.data?.user?.phoneNumber,
+                                'profilePhotoPath':
+                                    user?.data?.user?.profilePhotoPath,
+                              });
                             },
                             child: Container(
                               height: 40,
@@ -86,7 +109,7 @@ class ProfileView extends GetView<ProfileController> {
                         height: 12,
                       ),
                       Text(
-                        "Staff",
+                        '${user?.data?.user?.position}',
                         style:
                             textTheme.bodyMedium!.copyWith(color: Colors.white),
                       ),
@@ -94,14 +117,14 @@ class ProfileView extends GetView<ProfileController> {
                         height: 6,
                       ),
                       Text(
-                        "Jimmy Soedibjo",
+                        '${user?.data?.user?.name}',
                         style: textTheme.titleMedium,
                       ),
                       const SizedBox(
                         height: 6,
                       ),
                       Text(
-                        "dibjosoe123@gmail.com",
+                        '${user?.data?.user?.phoneNumber}',
                         style: textTheme.bodySmall,
                       ),
                     ],
@@ -139,7 +162,10 @@ class ProfileView extends GetView<ProfileController> {
                       ),
                       InkWell(
                         onTap: () {
-                          Get.toNamed('/report-change-imei');
+                          Get.toNamed('/change-device', arguments: [
+                            user?.data?.user?.nip,
+                            user?.data?.user?.officeId,
+                          ]);
                         },
                         child: Row(
                           children: [
@@ -148,7 +174,7 @@ class ProfileView extends GetView<ProfileController> {
                               width: 12,
                             ),
                             Text(
-                              "change imei",
+                              "Ganti Device",
                               style: textTheme.bodyLarge!.copyWith(
                                 color: const Color(0xFF383838),
                               ),

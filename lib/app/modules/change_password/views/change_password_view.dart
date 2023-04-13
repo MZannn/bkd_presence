@@ -125,6 +125,8 @@ class ChangePasswordView extends GetView<ChangePasswordController> {
               Align(
                 alignment: Alignment.center,
                 child: Button(
+                  height: 41,
+                  width: 150,
                   onPressed: () {},
                   child: Text(
                     "Simpan",

@@ -9,6 +9,9 @@ abstract class Routes {
   static const editProfile = _Paths.editProfile;
   static const changePassword = _Paths.changePassword;
   static const presenceHistory = _Paths.presenceHistory;
+  static const changeDevice = _Paths.changeDevice;
+  static const detailPresence = _Paths.detailPresence;
+  static const PERMISSION = _Paths.PERMISSION;
 }
 
 abstract class _Paths {
@@ -19,4 +22,7 @@ abstract class _Paths {
   static const editProfile = '/edit-profile';
   static const changePassword = '/change-password';
   static const presenceHistory = '/presence-history';
+  static const changeDevice = '/change-device';
+  static const detailPresence = '/detail-presence';
+  static const PERMISSION = '/permission';
 }

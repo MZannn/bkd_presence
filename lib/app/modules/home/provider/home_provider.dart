@@ -21,13 +21,12 @@ class HomeProvider {
     return UserModel.fromJson(response);
   }
 
-  Future<UserModel> presenceOut(int id, body) async {
+  Future<UserModel?> presenceOut(int id, body) async {
     final response = await _apiService.put(
       body: body,
       endpoint: '/presence-out/$id',
       requiresAuthToken: true,
     );
-    print(response);
     return UserModel.fromJson(response);
   }
 

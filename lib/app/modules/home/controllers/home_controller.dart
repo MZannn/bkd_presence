@@ -1,13 +1,16 @@
+import 'dart:async';
 import 'dart:math';
 
 import 'package:bkd_presence/app/models/user_model.dart';
 import 'package:bkd_presence/app/modules/home/provider/home_provider.dart';
 import 'package:bkd_presence/app/themes/color_constants.dart';
 import 'package:bkd_presence/app/themes/constants.dart';
+import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:intl/intl.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class HomeController extends GetxController with StateMixin<UserModel> {
   final HomeProvider _homeProvider;
@@ -81,6 +84,8 @@ class HomeController extends GetxController with StateMixin<UserModel> {
       accuracy: LocationAccuracy.high,
       distanceFilter: 10,
     )).listen((Position position) async {
+      latitude.value = position.latitude;
+      longitude.value = position.longitude;
       try {
         final mock = await mockGpsChecker();
         final userPresence = state?.data?.presences?.first;
@@ -95,15 +100,12 @@ class HomeController extends GetxController with StateMixin<UserModel> {
             if (state != null) {
               change(null, status: RxStatus.loading());
             }
-
             final presence = await sendAttendanceToServer(
                 userPresence!.id!, position, entryStatus);
-
             change(
               presence,
               status: RxStatus.success(),
             );
-            print(state);
             final message =
                 isLate ? 'Anda Hadir Terlambat' : 'Anda Hadir Tepat Waktu';
 
@@ -111,18 +113,23 @@ class HomeController extends GetxController with StateMixin<UserModel> {
               message: message,
               backgroundColor: ColorConstants.mainColor,
               snackPosition: SnackPosition.BOTTOM,
+              margin: const EdgeInsets.all(16),
+              borderRadius: 8,
+              duration: const Duration(seconds: 3),
             );
           } else if (mock) {
             Get.rawSnackbar(
               message: 'Anda terdeteksi menggunakan fake GPS',
               backgroundColor: ColorConstants.redColor,
               snackPosition: SnackPosition.BOTTOM,
+              margin: const EdgeInsets.all(16),
+              borderRadius: 8,
+              duration: const Duration(seconds: 3),
             );
           }
         }
       } catch (e) {
-        print('Error: $e');
-        // Add error handling here
+        change(null, status: RxStatus.error(e.toString()));
       }
     });
   }
@@ -146,15 +153,74 @@ class HomeController extends GetxController with StateMixin<UserModel> {
     return presence;
   }
 
+  presenceOut() async {
+    final userPresence = state?.data?.presences?.first;
+    final exitDistance = calculateDistance(Constants.latitude,
+        Constants.longitude, latitude.value, longitude.value);
+    var body = {
+      "attendance_clock_out": DateFormat('HH:mm:ss').format(now),
+      "attendance_exit_status": "Hadir",
+      "exit_position": latitude.value,
+      "exit_distance": exitDistance,
+    };
+    try {
+      if (userPresence?.attendanceClockOut == null) {
+        change(null, status: RxStatus.loading());
+        final presence =
+            await _homeProvider.presenceOut(userPresence!.id!, body);
+        change(presence, status: RxStatus.success());
+        Get.rawSnackbar(
+          message: 'Presensi keluar berhasil',
+          backgroundColor: ColorConstants.mainColor,
+          margin: const EdgeInsets.all(16),
+          borderRadius: 8,
+          snackPosition: SnackPosition.BOTTOM,
+          duration: const Duration(seconds: 3),
+        );
+      } else {
+        Get.rawSnackbar(
+          message: 'Anda sudah melakukan presensi keluar',
+          backgroundColor: ColorConstants.redColor,
+          margin: const EdgeInsets.all(16),
+          borderRadius: 8,
+          snackPosition: SnackPosition.BOTTOM,
+          duration: const Duration(seconds: 3),
+        );
+      }
+    } catch (e) {
+      change(null, status: RxStatus.error(e.toString()));
+    }
+  }
+
   getUser() async {
     change(null, status: RxStatus.loading());
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? token = prefs.getString('token');
     try {
       final user = await _homeProvider.getUsers();
       Constants.latitude = double.parse(user!.data!.user!.office!.latitude!);
       Constants.longitude = double.parse(user.data!.user!.office!.longitude!);
       change(user, status: RxStatus.success());
+      if (user.data?.user?.deviceId == null && token != null) {
+        await _homeProvider.logout();
+        prefs.clear();
+        Get.dialog(
+          AlertDialog(
+            title: const Text('Permintaan Penggantian Device Anda Di Setujui'),
+            content: const Text(
+                'Silahkan Login Kembali Untuk Melanjutkan Penggunaan Aplikasi'),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Get.offAllNamed('/login');
+                },
+                child: const Text('OK'),
+              ),
+            ],
+          ),
+        );
+      }
     } catch (e) {
-      print(e);
       change(null, status: RxStatus.error(e.toString()));
     }
   }
@@ -162,7 +228,7 @@ class HomeController extends GetxController with StateMixin<UserModel> {
   Future<String> formatDate(String date) async {
     DateTime dateTime = DateTime.parse(date);
     String formattedDate =
-        DateFormat('EEEE yyyy-MM-dd', 'id_ID').format(dateTime);
+        DateFormat('EEEE, yyyy-MM-dd', 'id_ID').format(dateTime);
 
     return formattedDate;
   }
@@ -175,14 +241,14 @@ class HomeController extends GetxController with StateMixin<UserModel> {
     checkLocationChanges();
     await determinePosition().then((value) async {
       difference = now.difference(value.timestamp!);
-      latitude.value = value.latitude;
-      longitude.value = value.longitude;
       cameraPosition = CameraPosition(
         target: LatLng(value.latitude, value.longitude),
         zoom: 14,
       );
     });
-
+    Timer.periodic(const Duration(seconds: 1), (timer) {
+      now = DateTime.now();
+    });
     // getLocation();
     isLoading.value = false;
     super.onInit();

@@ -90,12 +90,12 @@ class HomeLoading extends StatelessWidget {
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(10),
                         color: Colors.white,
-                        boxShadow: const [
+                        boxShadow: [
                           BoxShadow(
-                            color: Colors.black38,
-                            blurRadius: 3,
-                            spreadRadius: 0.02,
-                            offset: Offset(0, 0.4),
+                            color: Colors.grey.withOpacity(0.5),
+                            spreadRadius: 1,
+                            blurRadius: 7,
+                            offset: const Offset(0, 3),
                           ),
                         ],
                       ),

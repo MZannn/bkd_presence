@@ -48,9 +48,8 @@ class LoginController extends GetxController {
             backgroundColor: ColorConstants.redColor,
             snackPosition: SnackPosition.BOTTOM);
       }
-    } catch (e) {
-      print(e);
-    }
+      // ignore: empty_catches
+    } catch (e) {}
   }
 
   @override

@@ -2,7 +2,8 @@ import 'package:bkd_presence/app/modules/profile/views/profile_view.dart';
 import 'package:bkd_presence/app/themes/color_constants.dart';
 import 'package:bkd_presence/app/themes/constants.dart';
 import 'package:bkd_presence/app/themes/themes.dart';
-import 'package:bkd_presence/app/widgets/shimmer_loading.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -18,6 +19,14 @@ class HomeView extends GetView<HomeController> {
   const HomeView({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
+    DateTime clockOut = DateTime(
+      controller.now.year,
+      controller.now.month,
+      controller.now.day,
+      15,
+      30,
+      0,
+    );
     final textTheme = Themes.light.textTheme;
     return Scaffold(
       body: controller.obx(
@@ -29,7 +38,7 @@ class HomeView extends GetView<HomeController> {
           DateTime dateTime =
               DateTime.parse("${state?.data?.presences?.first.presenceDate}");
           var presencesDate =
-              DateFormat('EEEE yyyy-MM-dd', 'id_ID').format(dateTime);
+              DateFormat('EEEE, yyyy-MM-dd', 'id_ID').format(dateTime);
 
           getInitials(name!);
           return Obx(
@@ -47,94 +56,99 @@ class HomeView extends GetView<HomeController> {
                           color: ColorConstants.mainColor,
                         ),
                         SafeArea(
-                          child: ListView(
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.only(
-                                  top: 24,
-                                  left: 16,
-                                  bottom: 16,
-                                ),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      "Badan Kepegawaian Daerah",
-                                      style: textTheme.titleMedium,
-                                    ),
-                                    const SizedBox(
-                                      height: 12,
-                                    ),
-                                    Row(
-                                      children: [
-                                        Container(
-                                          decoration: BoxDecoration(
-                                            borderRadius:
-                                                BorderRadius.circular(50),
-                                            border: Border.all(
-                                              color: Colors.white,
-                                              width: 2,
-                                            ),
-                                          ),
-                                          padding: const EdgeInsets.all(3),
-                                          child: Container(
-                                            height: 60,
-                                            width: 60,
+                          child: RefreshIndicator(
+                            onRefresh: () async {
+                              await controller.getUser();
+                            },
+                            child: ListView(
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.only(
+                                    top: 24,
+                                    left: 16,
+                                    bottom: 16,
+                                  ),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        "Badan Kepegawaian Daerah",
+                                        style: textTheme.titleMedium,
+                                      ),
+                                      const SizedBox(
+                                        height: 12,
+                                      ),
+                                      Row(
+                                        children: [
+                                          Container(
                                             decoration: BoxDecoration(
                                               borderRadius:
                                                   BorderRadius.circular(50),
+                                              border: Border.all(
+                                                color: Colors.white,
+                                                width: 2,
+                                              ),
                                             ),
-                                            child: ClipRRect(
-                                              borderRadius:
-                                                  BorderRadius.circular(50),
-                                              child: state?.data?.user
-                                                          ?.profilePhotoPath ==
-                                                      null
-                                                  ? CircleAvatar(
-                                                      backgroundColor:
-                                                          Colors.white,
-                                                      child: Text(
-                                                        getInitials(name),
-                                                        style: textTheme
-                                                            .bodyLarge!
-                                                            .copyWith(
-                                                          fontSize: 22,
-                                                          color: ColorConstants
-                                                              .mainColor,
+                                            padding: const EdgeInsets.all(3),
+                                            child: Container(
+                                              height: 60,
+                                              width: 60,
+                                              decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(50),
+                                              ),
+                                              child: ClipRRect(
+                                                borderRadius:
+                                                    BorderRadius.circular(50),
+                                                child: state?.data?.user
+                                                            ?.profilePhotoPath ==
+                                                        null
+                                                    ? CircleAvatar(
+                                                        backgroundColor:
+                                                            Colors.white,
+                                                        child: Text(
+                                                          getInitials(name),
+                                                          style: textTheme
+                                                              .bodyLarge!
+                                                              .copyWith(
+                                                            fontSize: 22,
+                                                            color:
+                                                                ColorConstants
+                                                                    .mainColor,
+                                                          ),
                                                         ),
+                                                      )
+                                                    : Image.network(
+                                                        'https://zandev.site/storage/${state?.data?.user?.profilePhotoPath}',
+                                                        fit: BoxFit.cover,
                                                       ),
-                                                    )
-                                                  : Image.network(
-                                                      "${state?.data?.user?.profilePhotoPath}",
-                                                      fit: BoxFit.cover,
-                                                    ),
+                                              ),
                                             ),
                                           ),
-                                        ),
-                                        const SizedBox(
-                                          width: 12,
-                                        ),
-                                        Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Text(
-                                              '${state?.data?.user?.name}',
-                                              style: textTheme.bodyLarge,
-                                            ),
-                                            Text(
-                                              '${state?.data?.user?.position}',
-                                              style: textTheme.bodySmall,
-                                            ),
-                                          ],
-                                        )
-                                      ],
-                                    ),
-                                  ],
+                                          const SizedBox(
+                                            width: 12,
+                                          ),
+                                          Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Text(
+                                                '${state?.data?.user?.name}',
+                                                style: textTheme.bodyLarge,
+                                              ),
+                                              Text(
+                                                '${state?.data?.user?.position}',
+                                                style: textTheme.bodySmall,
+                                              ),
+                                            ],
+                                          )
+                                        ],
+                                      ),
+                                    ],
+                                  ),
                                 ),
-                              ),
-                              Expanded(
-                                child: Container(
+                                Container(
                                   padding: const EdgeInsets.all(24),
                                   decoration: const BoxDecoration(
                                     color: Colors.white,
@@ -179,141 +193,180 @@ class HomeView extends GetView<HomeController> {
                                           },
                                           initialCameraPosition:
                                               controller.cameraPosition,
+                                          // ignore: prefer_collection_literals
+                                          gestureRecognizers: Set()
+                                            ..add(Factory<PanGestureRecognizer>(
+                                                () => PanGestureRecognizer()))
+                                            ..add(Factory<
+                                                    ScaleGestureRecognizer>(
+                                                () => ScaleGestureRecognizer()))
+                                            ..add(Factory<TapGestureRecognizer>(
+                                                () => TapGestureRecognizer()))
+                                            ..add(
+                                              Factory<
+                                                  VerticalDragGestureRecognizer>(
+                                                () =>
+                                                    VerticalDragGestureRecognizer(),
+                                              ),
+                                            )
+                                            ..add(
+                                              Factory<
+                                                  HorizontalDragGestureRecognizer>(
+                                                () =>
+                                                    HorizontalDragGestureRecognizer(),
+                                              ),
+                                            ),
                                           myLocationEnabled: true,
                                         ),
                                       ),
                                       const SizedBox(
                                         height: 20,
                                       ),
-                                      Container(
-                                        padding: const EdgeInsets.symmetric(
-                                          horizontal: 12,
-                                          vertical: 16,
-                                        ),
-                                        decoration: BoxDecoration(
-                                          color: Colors.white,
-                                          borderRadius:
-                                              BorderRadius.circular(10),
-                                          boxShadow: const [
-                                            BoxShadow(
-                                              color: Colors.black38,
-                                              blurRadius: 3,
-                                              spreadRadius: 0.02,
-                                              offset: Offset(0, 0.4),
-                                            ),
-                                          ],
-                                        ),
-                                        child: Column(
-                                          children: [
-                                            Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              children: [
-                                                Column(
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
-                                                  children: [
-                                                    Text(
-                                                      "Masuk",
-                                                      style:
-                                                          textTheme.labelMedium,
-                                                    ),
-                                                    Text(
-                                                      "${state?.data?.presences?.first.attendanceClock}",
-                                                      style: textTheme
-                                                          .bodyMedium!
-                                                          .copyWith(
-                                                        fontWeight:
-                                                            FontWeight.w400,
+                                      GestureDetector(
+                                        onTap: () {
+                                          Get.toNamed('/detail-presence',
+                                              arguments: state
+                                                  ?.data?.presences?.first.id);
+                                        },
+                                        child: Container(
+                                          padding: const EdgeInsets.symmetric(
+                                            horizontal: 12,
+                                            vertical: 16,
+                                          ),
+                                          decoration: BoxDecoration(
+                                            color: Colors.white,
+                                            borderRadius:
+                                                BorderRadius.circular(10),
+                                            boxShadow: [
+                                              BoxShadow(
+                                                color: Colors.grey
+                                                    .withOpacity(0.5),
+                                                spreadRadius: 1,
+                                                blurRadius: 7,
+                                                offset: const Offset(0, 3),
+                                              ),
+                                            ],
+                                          ),
+                                          child: Column(
+                                            children: [
+                                              Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                children: [
+                                                  Column(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
+                                                    children: [
+                                                      Text(
+                                                        "Masuk",
+                                                        style: textTheme
+                                                            .labelMedium,
                                                       ),
-                                                    ),
-                                                  ],
-                                                ),
-                                                const SizedBox(
-                                                  height: 2,
-                                                ),
-                                                Column(
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.end,
-                                                  children: [
-                                                    Text(
-                                                      "${state?.data?.presences?.first.attendanceEntryStatus}",
-                                                      style: textTheme
-                                                          .labelMedium!
-                                                          .copyWith(
-                                                              color:
-                                                                  ColorConstants
-                                                                      .redColor),
-                                                    ),
-                                                    Text(
-                                                      // DateFormat('yyyy-MM-dd'),
-                                                      presencesDate,
-                                                      style: textTheme
-                                                          .bodyMedium!
-                                                          .copyWith(
-                                                        fontWeight:
-                                                            FontWeight.w400,
+                                                      Text(
+                                                        '${state?.data?.presences?.first.attendanceClock ?? "-"}',
+                                                        style: textTheme
+                                                            .bodyMedium!
+                                                            .copyWith(
+                                                          fontWeight:
+                                                              FontWeight.w400,
+                                                        ),
                                                       ),
-                                                    ),
-                                                  ],
-                                                ),
-                                              ],
-                                            ),
-                                            // ignore: prefer_const_constructors
-                                            SizedBox(
-                                              height: 10,
-                                            ),
-                                            Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.end,
-                                              children: [
-                                                Column(
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
-                                                  children: [
-                                                    Text(
-                                                      "Keluar",
-                                                      style:
-                                                          textTheme.labelMedium,
-                                                    ),
-                                                    Text(
-                                                      "${state?.data?.presences?.first.attendanceClockOut}",
-                                                      style: textTheme
-                                                          .bodyMedium!
-                                                          .copyWith(
-                                                        fontWeight:
-                                                            FontWeight.w400,
+                                                    ],
+                                                  ),
+                                                  const SizedBox(
+                                                    height: 2,
+                                                  ),
+                                                  Column(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment.end,
+                                                    children: [
+                                                      state
+                                                                  ?.data
+                                                                  ?.presences
+                                                                  ?.first
+                                                                  .attendanceEntryStatus ==
+                                                              "Terlambat"
+                                                          ? Text(
+                                                              "${state?.data?.presences?.first.attendanceEntryStatus}",
+                                                              style: textTheme
+                                                                  .labelMedium!
+                                                                  .copyWith(
+                                                                      color: ColorConstants
+                                                                          .redColor),
+                                                            )
+                                                          : const SizedBox(
+                                                              height: 14,
+                                                            ),
+                                                      Text(
+                                                        presencesDate,
+                                                        style: textTheme
+                                                            .bodyMedium!
+                                                            .copyWith(
+                                                          fontWeight:
+                                                              FontWeight.w400,
+                                                        ),
                                                       ),
-                                                    ),
-                                                  ],
-                                                ),
-                                                const SizedBox(
-                                                  height: 2,
-                                                ),
-                                                Column(
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.end,
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment.end,
-                                                  children: [
-                                                    Text(
-                                                      presencesDate,
-                                                      style: textTheme
-                                                          .bodyMedium!
-                                                          .copyWith(
-                                                        fontWeight:
-                                                            FontWeight.w400,
+                                                    ],
+                                                  ),
+                                                ],
+                                              ),
+                                              const SizedBox(
+                                                height: 10,
+                                              ),
+                                              Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.end,
+                                                children: [
+                                                  Column(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
+                                                    children: [
+                                                      Text(
+                                                        "Keluar",
+                                                        style: textTheme
+                                                            .labelMedium,
                                                       ),
-                                                    ),
-                                                  ],
-                                                ),
-                                              ],
-                                            ),
-                                          ],
+                                                      Text(
+                                                        '${state?.data?.presences?.first.attendanceClockOut ?? '-'}',
+                                                        style: textTheme
+                                                            .bodyMedium!
+                                                            .copyWith(
+                                                          fontWeight:
+                                                              FontWeight.w400,
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                  const SizedBox(
+                                                    height: 2,
+                                                  ),
+                                                  Column(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment.end,
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment.end,
+                                                    children: [
+                                                      Text(
+                                                        presencesDate,
+                                                        style: textTheme
+                                                            .bodyMedium!
+                                                            .copyWith(
+                                                          fontWeight:
+                                                              FontWeight.w400,
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ],
+                                              ),
+                                            ],
+                                          ),
                                         ),
                                       ),
                                       Row(
@@ -346,144 +399,162 @@ class HomeView extends GetView<HomeController> {
                                               if (snapshot.hasData) {
                                                 String formattedDate =
                                                     snapshot.data!;
-                                                return Container(
-                                                  padding: const EdgeInsets
-                                                      .symmetric(
-                                                    horizontal: 12,
-                                                    vertical: 16,
-                                                  ),
-                                                  margin: const EdgeInsets.only(
-                                                      bottom: 16),
-                                                  decoration: BoxDecoration(
-                                                    color: Colors.white,
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            10),
-                                                    boxShadow: const [
-                                                      BoxShadow(
-                                                        color: Colors.black38,
-                                                        blurRadius: 3,
-                                                        spreadRadius: 0.02,
-                                                        offset: Offset(0, 0.4),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                  child: Column(
-                                                    children: [
-                                                      Row(
-                                                        mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .spaceBetween,
-                                                        children: [
-                                                          Column(
-                                                            crossAxisAlignment:
-                                                                CrossAxisAlignment
-                                                                    .start,
-                                                            children: [
-                                                              Text("Masuk",
+                                                return GestureDetector(
+                                                  onTap: () {
+                                                    Get.toNamed(
+                                                        '/detail-presence',
+                                                        arguments: state
+                                                            ?.data
+                                                            ?.presences?[index]
+                                                            .id);
+                                                  },
+                                                  child: Container(
+                                                    padding: const EdgeInsets
+                                                        .symmetric(
+                                                      horizontal: 12,
+                                                      vertical: 16,
+                                                    ),
+                                                    margin:
+                                                        const EdgeInsets.only(
+                                                            bottom: 16),
+                                                    decoration: BoxDecoration(
+                                                      color: Colors.white,
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              10),
+                                                      boxShadow: [
+                                                        BoxShadow(
+                                                          color: Colors.grey
+                                                              .withOpacity(0.5),
+                                                          spreadRadius: 1,
+                                                          blurRadius: 7,
+                                                          offset: const Offset(
+                                                              0, 3),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                    child: Column(
+                                                      children: [
+                                                        Row(
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .spaceBetween,
+                                                          children: [
+                                                            Column(
+                                                              crossAxisAlignment:
+                                                                  CrossAxisAlignment
+                                                                      .start,
+                                                              children: [
+                                                                Text("Masuk",
+                                                                    style: textTheme
+                                                                        .labelMedium),
+                                                                Text(
+                                                                  '${state?.data?.presences?[index].attendanceClock ?? "-"}',
                                                                   style: textTheme
-                                                                      .labelMedium),
-                                                              Text(
-                                                                "${state?.data?.presences?[index].attendanceClock}",
-                                                                style: textTheme
-                                                                    .bodyMedium!
-                                                                    .copyWith(
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .w400,
+                                                                      .bodyMedium!
+                                                                      .copyWith(
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w400,
+                                                                  ),
                                                                 ),
-                                                              ),
-                                                            ],
-                                                          ),
-                                                          const SizedBox(
-                                                            height: 2,
-                                                          ),
-                                                          Column(
-                                                            crossAxisAlignment:
-                                                                CrossAxisAlignment
-                                                                    .end,
-                                                            children: [
-                                                              Text(
-                                                                "${state?.data?.presences?[index].attendanceEntryStatus}",
-                                                                style: textTheme
-                                                                    .labelMedium!
-                                                                    .copyWith(
-                                                                        color: ColorConstants
-                                                                            .redColor),
-                                                              ),
-                                                              Text(
-                                                                formattedDate,
-                                                                style: textTheme
-                                                                    .bodyMedium!
-                                                                    .copyWith(
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .w400,
+                                                              ],
+                                                            ),
+                                                            const SizedBox(
+                                                              height: 2,
+                                                            ),
+                                                            Column(
+                                                              crossAxisAlignment:
+                                                                  CrossAxisAlignment
+                                                                      .end,
+                                                              children: [
+                                                                state?.data?.presences?[index]
+                                                                            .attendanceEntryStatus ==
+                                                                        "Terlambat"
+                                                                    ? Text(
+                                                                        "${state?.data?.presences?[index].attendanceEntryStatus}",
+                                                                        style: textTheme
+                                                                            .labelMedium!
+                                                                            .copyWith(color: ColorConstants.redColor),
+                                                                      )
+                                                                    : const SizedBox(
+                                                                        height:
+                                                                            14,
+                                                                      ),
+                                                                Text(
+                                                                  formattedDate,
+                                                                  style: textTheme
+                                                                      .bodyMedium!
+                                                                      .copyWith(
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w400,
+                                                                  ),
                                                                 ),
-                                                              ),
-                                                            ],
-                                                          ),
-                                                        ],
-                                                      ),
-                                                      const SizedBox(
-                                                        height: 10,
-                                                      ),
-                                                      Row(
-                                                        mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .spaceBetween,
-                                                        crossAxisAlignment:
-                                                            CrossAxisAlignment
-                                                                .end,
-                                                        children: [
-                                                          Column(
-                                                            crossAxisAlignment:
-                                                                CrossAxisAlignment
-                                                                    .start,
-                                                            children: [
-                                                              Text(
-                                                                "Keluar",
-                                                                style: textTheme
-                                                                    .labelMedium,
-                                                              ),
-                                                              Text(
-                                                                "${state?.data?.presences?[index].attendanceClockOut}",
-                                                                style: textTheme
-                                                                    .bodyMedium!
-                                                                    .copyWith(
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .w400,
+                                                              ],
+                                                            ),
+                                                          ],
+                                                        ),
+                                                        const SizedBox(
+                                                          height: 10,
+                                                        ),
+                                                        Row(
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .spaceBetween,
+                                                          crossAxisAlignment:
+                                                              CrossAxisAlignment
+                                                                  .end,
+                                                          children: [
+                                                            Column(
+                                                              crossAxisAlignment:
+                                                                  CrossAxisAlignment
+                                                                      .start,
+                                                              children: [
+                                                                Text(
+                                                                  "Keluar",
+                                                                  style: textTheme
+                                                                      .labelMedium,
                                                                 ),
-                                                              ),
-                                                            ],
-                                                          ),
-                                                          const SizedBox(
-                                                            height: 2,
-                                                          ),
-                                                          Column(
-                                                            crossAxisAlignment:
-                                                                CrossAxisAlignment
-                                                                    .end,
-                                                            mainAxisAlignment:
-                                                                MainAxisAlignment
-                                                                    .end,
-                                                            children: [
-                                                              Text(
-                                                                formattedDate,
-                                                                style: textTheme
-                                                                    .bodyMedium!
-                                                                    .copyWith(
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .w400,
+                                                                Text(
+                                                                  '${state?.data?.presences?[index].attendanceClockOut ?? "-"} ',
+                                                                  style: textTheme
+                                                                      .bodyMedium!
+                                                                      .copyWith(
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w400,
+                                                                  ),
                                                                 ),
-                                                              ),
-                                                            ],
-                                                          ),
-                                                        ],
-                                                      ),
-                                                    ],
+                                                              ],
+                                                            ),
+                                                            const SizedBox(
+                                                              height: 2,
+                                                            ),
+                                                            Column(
+                                                              crossAxisAlignment:
+                                                                  CrossAxisAlignment
+                                                                      .end,
+                                                              mainAxisAlignment:
+                                                                  MainAxisAlignment
+                                                                      .end,
+                                                              children: [
+                                                                Text(
+                                                                  formattedDate,
+                                                                  style: textTheme
+                                                                      .bodyMedium!
+                                                                      .copyWith(
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w400,
+                                                                  ),
+                                                                ),
+                                                              ],
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      ],
+                                                    ),
                                                   ),
                                                 );
                                               } else {
@@ -495,16 +566,16 @@ class HomeView extends GetView<HomeController> {
                                       )
                                     ],
                                   ),
-                                ),
-                              )
-                            ],
+                                )
+                              ],
+                            ),
                           ),
                         ),
                       ],
                     );
                   },
                 ),
-                const ProfileView(),
+                ProfileView(state),
               ],
             ),
           );
@@ -581,33 +652,38 @@ class HomeView extends GetView<HomeController> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
-          // if (controller.now.hour >= 17) {
-          //   print('Dapat melakukan presensi keluar');
-          // } else {
-          //   Get.rawSnackbar(
-          //     message:
-          //         'Anda tidak dapat melakukan presensi keluar karena belum jam 17.00',
-          //     backgroundColor: ColorConstants.redColor,
-          //     margin: const EdgeInsets.all(16),
-          //     borderRadius: 8,
-          //     snackPosition: SnackPosition.BOTTOM,
-          //     duration: const Duration(seconds: 3),
-          //   );
-          // }
           await controller.mockGpsChecker();
-          if (controller.isMockLocation == false &&
-              controller.difference.inSeconds < 2) {
+          var distance = controller.calculateDistance(
+              Constants.latitude,
+              Constants.longitude,
+              controller.latitude.value,
+              controller.longitude.value);
+          if (controller.now.isBefore(clockOut)) {
             Get.rawSnackbar(
-              message: 'Anda Dapat Melakukan Presensi',
-              backgroundColor: ColorConstants.mainColor,
+              message:
+                  'Anda tidak dapat melakukan presensi keluar karena belum jam 15.30',
+              backgroundColor: ColorConstants.redColor,
               margin: const EdgeInsets.all(16),
               borderRadius: 8,
               snackPosition: SnackPosition.BOTTOM,
               duration: const Duration(seconds: 3),
             );
+          } else if (controller.isMockLocation == true) {
+            Get.rawSnackbar(
+              message: 'Anda Terdeteksi Menggunakan Fake GPS',
+              backgroundColor: ColorConstants.redColor,
+              margin: const EdgeInsets.all(16),
+              borderRadius: 8,
+              snackPosition: SnackPosition.BOTTOM,
+              duration: const Duration(seconds: 3),
+            );
+          } else if (controller.isMockLocation == false &&
+              controller.now.isAfter(clockOut) &&
+              distance <= 0.05) {
+            await controller.presenceOut();
           } else {
             Get.rawSnackbar(
-              message: 'Anda Terdeteksi menggunakan fake gps',
+              message: 'Anda Berada Diluar Zona Presensi',
               backgroundColor: ColorConstants.redColor,
               margin: const EdgeInsets.all(16),
               borderRadius: 8,
@@ -617,13 +693,11 @@ class HomeView extends GetView<HomeController> {
           }
         },
         elevation: 0,
-        backgroundColor:
-            //controller.now.hour >= 17
-            // ?
-            ColorConstants.mainColor,
-        // : ColorConstants.greyColor,
-        child: SvgPicture.asset("assets/icons/presence.svg"),
-        // ${controller.now.hour >= 17 ? 'presence.svg' : 'presence_disabled.svg'}
+        backgroundColor: controller.now.isAfter(clockOut)
+            ? ColorConstants.mainColor
+            : ColorConstants.greyColor,
+        child: SvgPicture.asset(
+            "assets/icons/${controller.now.isAfter(clockOut) ? 'presence.svg' : 'presence_disabled.svg'}"),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
     );

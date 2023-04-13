@@ -1,25 +1,25 @@
-import 'package:bkd_presence/app/models/presences_model.dart';
-import 'package:bkd_presence/app/modules/presence_history/provider/presence_history_provider.dart';
+import 'package:bkd_presence/app/models/detail_presence_model.dart';
+
+import 'package:bkd_presence/app/modules/detail_presence/provider/detail_presence_provider.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
-class PresenceHistoryController extends GetxController
-    with StateMixin<PresenceModel?> {
-  final PresenceHistoryProvider _presenceHistoryProvider;
-  PresenceHistoryController(this._presenceHistoryProvider);
+class DetailPresenceController extends GetxController
+    with StateMixin<DetailPresenceModel?> {
+  DetailPresenceController(this._detailPresenceProvider);
+  final DetailPresenceProvider _detailPresenceProvider;
 
-  getAllPresences() async {
+  Future getDetailPresence(int id) async {
     change(null, status: RxStatus.loading());
     try {
-      final response = await _presenceHistoryProvider.getAllPresence();
-      print(response);
+      final response = await _detailPresenceProvider.getDetailPresence(id);
       change(response, status: RxStatus.success());
     } catch (e) {
       change(null, status: RxStatus.error(e.toString()));
     }
   }
 
-  Future<String> formatDate(String date) async {
+  Future formattedDate(String date) async {
     DateTime dateTime = DateTime.parse(date);
     String formattedDate =
         DateFormat('EEEE, yyyy-MM-dd', 'id_ID').format(dateTime);
@@ -29,8 +29,8 @@ class PresenceHistoryController extends GetxController
 
   final count = 0.obs;
   @override
-  void onInit() async {
-    await getAllPresences();
+  void onInit() {
+    getDetailPresence(Get.arguments);
     super.onInit();
   }
 

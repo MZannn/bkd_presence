@@ -1,14 +1,21 @@
-import 'package:bkd_presence/app/binding/global_binding.dart';
 import 'package:get/get.dart';
 
+import '../binding/global_binding.dart';
+import '../models/user_model.dart';
+import '../modules/change_device/bindings/change_device_binding.dart';
+import '../modules/change_device/views/change_device_view.dart';
 import '../modules/change_password/bindings/change_password_binding.dart';
 import '../modules/change_password/views/change_password_view.dart';
+import '../modules/detail_presence/bindings/detail_presence_binding.dart';
+import '../modules/detail_presence/views/detail_presence_view.dart';
 import '../modules/edit_profile/bindings/edit_profile_binding.dart';
 import '../modules/edit_profile/views/edit_profile_view.dart';
 import '../modules/home/bindings/home_binding.dart';
 import '../modules/home/views/home_view.dart';
 import '../modules/login/bindings/login_binding.dart';
 import '../modules/login/views/login_view.dart';
+import '../modules/permission/bindings/permission_binding.dart';
+import '../modules/permission/views/permission_view.dart';
 import '../modules/presence_history/bindings/presence_history_binding.dart';
 import '../modules/presence_history/views/presence_history_view.dart';
 import '../modules/profile/bindings/profile_binding.dart';
@@ -41,7 +48,7 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.profile,
-      page: () => const ProfileView(),
+      page: () => ProfileView(UserModel()),
       binding: ProfileBinding(),
     ),
     GetPage(
@@ -58,6 +65,21 @@ class AppPages {
       name: _Paths.presenceHistory,
       page: () => const PresenceHistoryView(),
       binding: PresenceHistoryBinding(),
+    ),
+    GetPage(
+      name: _Paths.changeDevice,
+      page: () => const ChangeDeviceView(),
+      binding: ChangeDeviceBinding(),
+    ),
+    GetPage(
+      name: _Paths.detailPresence,
+      page: () => const DetailPresenceView(),
+      binding: DetailPresenceBinding(),
+    ),
+    GetPage(
+      name: _Paths.PERMISSION,
+      page: () => const PermissionView(),
+      binding: PermissionBinding(),
     ),
   ];
 }
