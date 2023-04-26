@@ -1,3 +1,4 @@
+import 'package:bkd_presence/app/themes/color_constants.dart';
 import 'package:bkd_presence/app/themes/themes.dart';
 import 'package:bkd_presence/app/widgets/custom_app_bar.dart';
 import 'package:flutter/material.dart';
@@ -65,6 +66,17 @@ class DetailPresenceView extends GetView<DetailPresenceController> {
                                 state?.data?.detailPresence?.attendanceClock ??
                                     "-",
                                 style: textTheme.labelSmall,
+                              ),
+                              Text(
+                                state?.data?.detailPresence
+                                            ?.attendanceEntryStatus
+                                            ?.toUpperCase() ==
+                                        "TERLAMBAT"
+                                    ? " (Terlambat)"
+                                    : "",
+                                style: textTheme.bodyMedium!.copyWith(
+                                  color: ColorConstants.redColor,
+                                ),
                               ),
                             ],
                           ),

@@ -11,6 +11,7 @@ class LoginView extends GetView<LoginController> {
   @override
   Widget build(BuildContext context) {
     final textTheme = Themes.light.textTheme;
+    final formKey = GlobalKey<FormState>();
     return Scaffold(body: Obx(() {
       if (controller.isLoading.value == true) {
         return const SizedBox();
@@ -25,7 +26,6 @@ class LoginView extends GetView<LoginController> {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(controller.deviceId.value),
                     Text(
                       "Login",
                       style: textTheme.titleLarge,
@@ -48,48 +48,17 @@ class LoginView extends GetView<LoginController> {
                 const SizedBox(
                   height: 24,
                 ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text("NIP", style: textTheme.labelMedium),
-                    const SizedBox(
-                      height: 8,
-                    ),
-                    TextFormField(
-                      controller: controller.nipController,
-                      decoration: InputDecoration(
-                        contentPadding: const EdgeInsets.symmetric(
-                          vertical: 8,
-                          horizontal: 12,
-                        ),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(8),
-                          borderSide: const BorderSide(
-                            strokeAlign: BorderSide.strokeAlignOutside,
-                            color: Color(0xFFA4A4A4),
-                          ),
-                        ),
-                        hintStyle: textTheme.bodyMedium!.copyWith(
-                          color: const Color(0xFF666666),
-                          fontWeight: FontWeight.w400,
-                        ),
+                Form(
+                  key: formKey,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text("NIP", style: textTheme.labelMedium),
+                      const SizedBox(
+                        height: 8,
                       ),
-                    ),
-                    const SizedBox(
-                      height: 24,
-                    ),
-                    Text(
-                      "Password",
-                      style: textTheme.labelMedium,
-                    ),
-                    const SizedBox(
-                      height: 8,
-                    ),
-                    Obx(
-                      () => TextFormField(
-                        controller: controller.passwordController,
-                        obscuringCharacter: "●",
-                        obscureText: controller.isHidden.value,
+                      TextFormField(
+                        controller: controller.nipController,
                         decoration: InputDecoration(
                           contentPadding: const EdgeInsets.symmetric(
                             vertical: 8,
@@ -102,22 +71,68 @@ class LoginView extends GetView<LoginController> {
                               color: Color(0xFFA4A4A4),
                             ),
                           ),
-                          suffixIcon: IconButton(
-                            onPressed: () {
-                              controller.hiddenPassword();
-                            },
-                            icon: controller.isHidden.value
-                                ? const Icon(
-                                    Icons.visibility_outlined,
-                                  )
-                                : const Icon(
-                                    Icons.visibility_off_outlined,
-                                  ),
+                          hintStyle: textTheme.bodyMedium!.copyWith(
+                            color: const Color(0xFF666666),
+                            fontWeight: FontWeight.w400,
                           ),
                         ),
+                        validator: (value) {
+                          if (value!.isEmpty) {
+                            return "NIP tidak boleh kosong";
+                          }
+                          return null;
+                        },
                       ),
-                    ),
-                  ],
+                      const SizedBox(
+                        height: 24,
+                      ),
+                      Text(
+                        "Password",
+                        style: textTheme.labelMedium,
+                      ),
+                      const SizedBox(
+                        height: 8,
+                      ),
+                      Obx(
+                        () => TextFormField(
+                          controller: controller.passwordController,
+                          obscuringCharacter: "●",
+                          obscureText: controller.isHidden.value,
+                          decoration: InputDecoration(
+                            contentPadding: const EdgeInsets.symmetric(
+                              vertical: 8,
+                              horizontal: 12,
+                            ),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(8),
+                              borderSide: const BorderSide(
+                                strokeAlign: BorderSide.strokeAlignOutside,
+                                color: Color(0xFFA4A4A4),
+                              ),
+                            ),
+                            suffixIcon: IconButton(
+                              onPressed: () {
+                                controller.hiddenPassword();
+                              },
+                              icon: controller.isHidden.value
+                                  ? const Icon(
+                                      Icons.visibility_outlined,
+                                    )
+                                  : const Icon(
+                                      Icons.visibility_off_outlined,
+                                    ),
+                            ),
+                          ),
+                          validator: (value) {
+                            if (value!.isEmpty) {
+                              return "Password tidak boleh kosong";
+                            }
+                            return null;
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
                 const SizedBox(
                   height: 36,
@@ -126,7 +141,9 @@ class LoginView extends GetView<LoginController> {
                   height: 41,
                   width: 150,
                   onPressed: () {
-                    controller.login();
+                    if (formKey.currentState!.validate()) {
+                      controller.login();
+                    }
                   },
                   child: Text(
                     "Masuk",

@@ -1,7 +1,8 @@
 import 'package:bkd_presence/app/models/user_model.dart';
 import 'package:bkd_presence/app/services/api_service.dart';
+import 'package:get/get.dart';
 
-class HomeProvider {
+class HomeProvider extends GetConnect {
   final ApiService _apiService;
   HomeProvider(this._apiService);
   Future<UserModel?> getUsers() async {
@@ -36,5 +37,11 @@ class HomeProvider {
       requiresAuthToken: true,
     );
     return response;
+  }
+
+  Future fetchTime() async {
+    var response = await get(
+        'https://www.timeapi.io/api/Time/current/zone?timeZone=Asia/Jakarta');
+    return response.body;
   }
 }

@@ -18,19 +18,20 @@ class HomeController extends GetxController with StateMixin<UserModel> {
   RxDouble latitude = 0.0.obs;
   RxDouble longitude = 0.0.obs;
   RxBool isLoading = false.obs;
+  RxBool isWaiting = false.obs;
   RxInt selectedIndex = 0.obs;
-  DateTime now = DateTime.now();
+  late DateTime now;
   late bool isMockLocation;
+  late DateTime clockOut;
 
   late Duration difference;
   late CameraPosition cameraPosition;
-
+  UserModel? user;
   Future<Position> getUserCurrentLocation() async {
     await Geolocator.requestPermission()
         .then((value) {})
         .onError((error, stackTrace) async {
       await Geolocator.requestPermission();
-      print('error : $error');
     });
     Position positon = await Geolocator.getCurrentPosition(
         desiredAccuracy: LocationAccuracy.high,
@@ -160,7 +161,7 @@ class HomeController extends GetxController with StateMixin<UserModel> {
     var body = {
       "attendance_clock_out": DateFormat('HH:mm:ss').format(now),
       "attendance_exit_status": "Hadir",
-      "exit_position": latitude.value,
+      "exit_position": "${latitude.value}, ${longitude.value}",
       "exit_distance": exitDistance,
     };
     try {
@@ -201,6 +202,8 @@ class HomeController extends GetxController with StateMixin<UserModel> {
       Constants.latitude = double.parse(user!.data!.user!.office!.latitude!);
       Constants.longitude = double.parse(user.data!.user!.office!.longitude!);
       change(user, status: RxStatus.success());
+      this.user = user;
+
       if (user.data?.user?.deviceId == null && token != null) {
         await _homeProvider.logout();
         prefs.clear();
@@ -233,10 +236,88 @@ class HomeController extends GetxController with StateMixin<UserModel> {
     return formattedDate;
   }
 
+  Future<DateTime> fetchTime() async {
+    var response = await _homeProvider.fetchTime();
+    var dateTimeString = response['dateTime'];
+    final formattedDateTimeString = dateTimeString.split('.')[0];
+    final dateTime = DateTime.parse(formattedDateTimeString);
+    final formatter = DateFormat('yyyy-MM-dd HH:mm:ss');
+    final date = formatter.format(dateTime);
+    DateTime formattedDateTime = DateTime.parse(date);
+    return formattedDateTime;
+  }
+
+  Future<void> presenceOutChecker() async {
+    await mockGpsChecker();
+    var distance = calculateDistance(Constants.latitude, Constants.longitude,
+        latitude.value, longitude.value);
+    if (now.weekday == DateTime.saturday || now.weekday == DateTime.sunday) {
+      Get.rawSnackbar(
+        message: 'Anda tidak dapat melakukan presensi karena ini hari libur',
+        backgroundColor: ColorConstants.redColor,
+        margin: const EdgeInsets.all(16),
+        borderRadius: 8,
+        snackPosition: SnackPosition.BOTTOM,
+        duration: const Duration(seconds: 3),
+      );
+    } else if (state?.data?.presences?.first.attendanceEntryStatus == null) {
+      Get.rawSnackbar(
+        message: 'Anda belum melakukan presensi masuk',
+        backgroundColor: ColorConstants.redColor,
+        margin: const EdgeInsets.all(16),
+        borderRadius: 8,
+        snackPosition: SnackPosition.BOTTOM,
+        duration: const Duration(seconds: 3),
+      );
+    } else if (now.isBefore(clockOut)) {
+      Get.rawSnackbar(
+        message:
+            'Anda tidak dapat melakukan presensi keluar karena belum jam 15.30',
+        backgroundColor: ColorConstants.redColor,
+        margin: const EdgeInsets.all(16),
+        borderRadius: 8,
+        snackPosition: SnackPosition.BOTTOM,
+        duration: const Duration(seconds: 3),
+      );
+    } else if (isMockLocation == true) {
+      Get.rawSnackbar(
+        message: 'Anda Terdeteksi Menggunakan Fake GPS',
+        backgroundColor: ColorConstants.redColor,
+        margin: const EdgeInsets.all(16),
+        borderRadius: 8,
+        snackPosition: SnackPosition.BOTTOM,
+        duration: const Duration(seconds: 3),
+      );
+    } else if (isMockLocation == false &&
+        now.isAfter(clockOut) &&
+        distance <= 0.05) {
+      await presenceOut();
+    } else {
+      Get.rawSnackbar(
+        message: 'Anda Berada Diluar Zona Presensi',
+        backgroundColor: ColorConstants.redColor,
+        margin: const EdgeInsets.all(16),
+        borderRadius: 8,
+        snackPosition: SnackPosition.BOTTOM,
+        duration: const Duration(seconds: 3),
+      );
+    }
+  }
+
+  Future<DateTime> out() async {
+    return DateTime(now.year, now.month, now.day, 15, 30, 0);
+  }
+
   @override
   void onInit() async {
     isLoading.value = true;
-    await getUser();
+    isWaiting.value = true;
+    now = await fetchTime();
+    clockOut = await out();
+    Timer.periodic(const Duration(seconds: 1), (timer) {
+      now = now.add(const Duration(seconds: 1));
+    });
+    isWaiting.value = false;
     await mockGpsChecker();
     checkLocationChanges();
     await determinePosition().then((value) async {
@@ -246,10 +327,7 @@ class HomeController extends GetxController with StateMixin<UserModel> {
         zoom: 14,
       );
     });
-    Timer.periodic(const Duration(seconds: 1), (timer) {
-      now = DateTime.now();
-    });
-    // getLocation();
+    await getUser();
     isLoading.value = false;
     super.onInit();
   }

@@ -20,16 +20,29 @@ class EditProfileController extends GetxController with StateMixin<UserModel?> {
     change(null, status: RxStatus.loading());
     try {
       final response = await _editProfileProvider.editProfile(
-          phoneNumberController.text, file!);
-      change(response, status: RxStatus.success());
-      Get.offAllNamed('/home');
-      Get.rawSnackbar(
-        message: 'Berhasil Mengubah Profile',
-        backgroundColor: ColorConstants.mainColor,
-        margin: const EdgeInsets.all(16),
-        borderRadius: 8,
-        snackPosition: SnackPosition.BOTTOM,
+        phoneNumberController.text,
+        file,
       );
+
+      change(response, status: RxStatus.success());
+      if (response!.code == 200) {
+        Get.offAllNamed('/home');
+        Get.rawSnackbar(
+          message: 'Berhasil Mengubah Profile',
+          backgroundColor: ColorConstants.mainColor,
+          margin: const EdgeInsets.all(16),
+          borderRadius: 8,
+          snackPosition: SnackPosition.BOTTOM,
+        );
+      } else {
+        Get.rawSnackbar(
+          message: 'Gagal Mengubah Profile',
+          backgroundColor: ColorConstants.mainColor,
+          margin: const EdgeInsets.all(16),
+          borderRadius: 8,
+          snackPosition: SnackPosition.BOTTOM,
+        );
+      }
     } catch (e) {
       change(null, status: RxStatus.error(e.toString()));
     }
@@ -77,15 +90,5 @@ class EditProfileController extends GetxController with StateMixin<UserModel?> {
     phoneNumberController =
         TextEditingController(text: Get.arguments['phoneNumber']);
     super.onInit();
-  }
-
-  @override
-  void onReady() {
-    super.onReady();
-  }
-
-  @override
-  void onClose() {
-    super.onClose();
   }
 }

@@ -10,7 +10,7 @@ class DetailPresenceProvider {
       endpoint: '/detail-presence/$id',
       requiresAuthToken: true,
     );
-    print(response);
+
     return DetailPresenceModel.fromJson(response);
   }
 }

@@ -9,7 +9,7 @@ class LoginController extends GetxController {
   final LoginProvider _loginProvider;
   LoginController(this._loginProvider);
   final isLoading = false.obs;
-  RxBool isHidden = false.obs;
+  RxBool isHidden = true.obs;
   RxString deviceId = ''.obs;
   void hiddenPassword() {
     isHidden.value = !isHidden.value;
@@ -44,9 +44,13 @@ class LoginController extends GetxController {
         Get.offAllNamed('/home');
       } else if (response['code'] == 401) {
         Get.rawSnackbar(
-            message: 'Username Atau Password Salah',
-            backgroundColor: ColorConstants.redColor,
-            snackPosition: SnackPosition.BOTTOM);
+          message: '${response['message']}',
+          backgroundColor: ColorConstants.redColor,
+          snackPosition: SnackPosition.BOTTOM,
+          margin: const EdgeInsets.all(16),
+          borderRadius: 8,
+          duration: const Duration(seconds: 3),
+        );
       }
       // ignore: empty_catches
     } catch (e) {}

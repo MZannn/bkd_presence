@@ -12,7 +12,6 @@ class PresenceHistoryController extends GetxController
     change(null, status: RxStatus.loading());
     try {
       final response = await _presenceHistoryProvider.getAllPresence();
-      print(response);
       change(response, status: RxStatus.success());
     } catch (e) {
       change(null, status: RxStatus.error(e.toString()));
@@ -27,22 +26,9 @@ class PresenceHistoryController extends GetxController
     return formattedDate;
   }
 
-  final count = 0.obs;
   @override
   void onInit() async {
     await getAllPresences();
     super.onInit();
   }
-
-  @override
-  void onReady() {
-    super.onReady();
-  }
-
-  @override
-  void onClose() {
-    super.onClose();
-  }
-
-  void increment() => count.value++;
 }

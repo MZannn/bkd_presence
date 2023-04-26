@@ -2,10 +2,10 @@ import 'package:get/get.dart';
 
 import '../binding/global_binding.dart';
 import '../models/user_model.dart';
+import '../modules/bussiness_trip/bindings/bussiness_trip_binding.dart';
+import '../modules/bussiness_trip/views/bussiness_trip_view.dart';
 import '../modules/change_device/bindings/change_device_binding.dart';
 import '../modules/change_device/views/change_device_view.dart';
-import '../modules/change_password/bindings/change_password_binding.dart';
-import '../modules/change_password/views/change_password_view.dart';
 import '../modules/detail_presence/bindings/detail_presence_binding.dart';
 import '../modules/detail_presence/views/detail_presence_view.dart';
 import '../modules/edit_profile/bindings/edit_profile_binding.dart';
@@ -21,11 +21,14 @@ import '../modules/presence_history/views/presence_history_view.dart';
 import '../modules/profile/bindings/profile_binding.dart';
 import '../modules/profile/views/profile_view.dart';
 
+import '../modules/splash/views/splash_view.dart';
+
 part 'app_routes.dart';
 
 class AppPages {
   AppPages._();
 
+  static const splash = Routes.splash;
   static const home = Routes.home;
   static const login = Routes.login;
 
@@ -57,11 +60,6 @@ class AppPages {
       binding: EditProfileBinding(),
     ),
     GetPage(
-      name: _Paths.changePassword,
-      page: () => const ChangePasswordView(),
-      binding: ChangePasswordBinding(),
-    ),
-    GetPage(
       name: _Paths.presenceHistory,
       page: () => const PresenceHistoryView(),
       binding: PresenceHistoryBinding(),
@@ -77,9 +75,18 @@ class AppPages {
       binding: DetailPresenceBinding(),
     ),
     GetPage(
-      name: _Paths.PERMISSION,
+      name: _Paths.permission,
       page: () => const PermissionView(),
       binding: PermissionBinding(),
+    ),
+    GetPage(
+      name: _Paths.bussinessTrip,
+      page: () => const BussinessTripView(),
+      binding: BussinessTripBinding(),
+    ),
+    GetPage(
+      name: _Paths.splash,
+      page: () => const SplashView(),
     ),
   ];
 }

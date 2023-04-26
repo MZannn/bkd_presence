@@ -19,14 +19,6 @@ class HomeView extends GetView<HomeController> {
   const HomeView({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    DateTime clockOut = DateTime(
-      controller.now.year,
-      controller.now.month,
-      controller.now.day,
-      15,
-      30,
-      0,
-    );
     final textTheme = Themes.light.textTheme;
     return Scaffold(
       body: controller.obx(
@@ -650,55 +642,25 @@ class HomeView extends GetView<HomeController> {
           ),
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () async {
-          await controller.mockGpsChecker();
-          var distance = controller.calculateDistance(
-              Constants.latitude,
-              Constants.longitude,
-              controller.latitude.value,
-              controller.longitude.value);
-          if (controller.now.isBefore(clockOut)) {
-            Get.rawSnackbar(
-              message:
-                  'Anda tidak dapat melakukan presensi keluar karena belum jam 15.30',
-              backgroundColor: ColorConstants.redColor,
-              margin: const EdgeInsets.all(16),
-              borderRadius: 8,
-              snackPosition: SnackPosition.BOTTOM,
-              duration: const Duration(seconds: 3),
-            );
-          } else if (controller.isMockLocation == true) {
-            Get.rawSnackbar(
-              message: 'Anda Terdeteksi Menggunakan Fake GPS',
-              backgroundColor: ColorConstants.redColor,
-              margin: const EdgeInsets.all(16),
-              borderRadius: 8,
-              snackPosition: SnackPosition.BOTTOM,
-              duration: const Duration(seconds: 3),
-            );
-          } else if (controller.isMockLocation == false &&
-              controller.now.isAfter(clockOut) &&
-              distance <= 0.05) {
-            await controller.presenceOut();
-          } else {
-            Get.rawSnackbar(
-              message: 'Anda Berada Diluar Zona Presensi',
-              backgroundColor: ColorConstants.redColor,
-              margin: const EdgeInsets.all(16),
-              borderRadius: 8,
-              snackPosition: SnackPosition.BOTTOM,
-              duration: const Duration(seconds: 3),
-            );
-          }
-        },
-        elevation: 0,
-        backgroundColor: controller.now.isAfter(clockOut)
-            ? ColorConstants.mainColor
-            : ColorConstants.greyColor,
-        child: SvgPicture.asset(
-            "assets/icons/${controller.now.isAfter(clockOut) ? 'presence.svg' : 'presence_disabled.svg'}"),
-      ),
+      floatingActionButton: Obx(() {
+        if (controller.isWaiting.value == true) {
+          return const SizedBox();
+        }
+        return FloatingActionButton(
+          onPressed: () async {
+            await controller.presenceOutChecker();
+          },
+          elevation: 0,
+          backgroundColor: controller.now.isAfter(controller.clockOut) &&
+                  controller
+                          .user?.data?.presences?.first.attendanceEntryStatus !=
+                      null
+              ? ColorConstants.mainColor
+              : ColorConstants.greyColor,
+          child: SvgPicture.asset(
+              "assets/icons/${controller.now.isAfter(controller.clockOut) && controller.user?.data?.presences?.first.attendanceEntryStatus != null ? 'presence.svg' : 'presence_disabled.svg'}"),
+        );
+      }),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
     );
   }

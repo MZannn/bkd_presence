@@ -2,7 +2,6 @@ import 'package:bkd_presence/app/models/user_model.dart';
 import 'package:bkd_presence/app/themes/color_constants.dart';
 import 'package:bkd_presence/app/themes/themes.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 
 import 'package:get/get.dart';
 
@@ -54,26 +53,41 @@ class ProfileView extends GetView<ProfileController> {
                       ),
                       Stack(
                         children: [
-                          SizedBox(
-                            height: 90,
-                            width: 90,
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(50),
-                              child: user?.data?.user?.profilePhotoPath == null
-                                  ? CircleAvatar(
-                                      backgroundColor: Colors.white,
-                                      child: Text(
-                                        getInitials(name),
-                                        style: textTheme.bodyLarge!.copyWith(
-                                          fontSize: 28,
-                                          color: ColorConstants.mainColor,
+                          Container(
+                            height: 105,
+                            width: 105,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(60),
+                              border: Border.all(
+                                color: Colors.white,
+                                width: 2,
+                              ),
+                            ),
+                            child: Center(
+                              child: SizedBox(
+                                height: 90,
+                                width: 90,
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(50),
+                                  child: user?.data?.user?.profilePhotoPath ==
+                                          null
+                                      ? CircleAvatar(
+                                          backgroundColor: Colors.white,
+                                          child: Text(
+                                            getInitials(name),
+                                            style:
+                                                textTheme.bodyLarge!.copyWith(
+                                              fontSize: 28,
+                                              color: ColorConstants.mainColor,
+                                            ),
+                                          ),
+                                        )
+                                      : Image.network(
+                                          "https://zandev.site/storage/${user?.data?.user?.profilePhotoPath}",
+                                          fit: BoxFit.cover,
                                         ),
-                                      ),
-                                    )
-                                  : Image.network(
-                                      "https://zandev.site/storage/${user?.data?.user?.profilePhotoPath}",
-                                      fit: BoxFit.cover,
-                                    ),
+                                ),
+                              ),
                             ),
                           ),
                           GestureDetector(
@@ -89,9 +103,9 @@ class ProfileView extends GetView<ProfileController> {
                             child: Container(
                               height: 40,
                               width: 40,
-                              margin: const EdgeInsets.only(top: 55, left: 55),
+                              margin: const EdgeInsets.only(top: 65, left: 65),
                               decoration: BoxDecoration(
-                                color: Colors.red,
+                                color: ColorConstants.redColor,
                                 borderRadius: BorderRadius.circular(
                                   30,
                                 ),
@@ -140,16 +154,47 @@ class ProfileView extends GetView<ProfileController> {
                     children: [
                       InkWell(
                         onTap: () {
-                          Get.toNamed('/change-password');
+                          Get.toNamed('/permission', arguments: {
+                            'employee_id': user?.data?.user?.nip,
+                            'office_id': user?.data?.user?.officeId,
+                            'presence_id': user?.data?.presences?.first.id,
+                            'date': user?.data?.presences?.first.presenceDate,
+                          });
                         },
                         child: Row(
                           children: [
-                            SvgPicture.asset("assets/icons/edit.svg"),
+                            const Icon(Icons.coronavirus),
                             const SizedBox(
                               width: 12,
                             ),
                             Text(
-                              "Ubah Password",
+                              "Izin atau Sakit",
+                              style: textTheme.bodyLarge!.copyWith(
+                                color: const Color(0xFF383838),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 16,
+                      ),
+                      InkWell(
+                        onTap: () {
+                          Get.toNamed('/bussiness-trip', arguments: {
+                            'employee_id': user?.data?.user?.nip,
+                            'office_id': user?.data?.user?.officeId,
+                            'presence_id': user?.data?.presences?.first.id,
+                          });
+                        },
+                        child: Row(
+                          children: [
+                            const Icon(Icons.work),
+                            const SizedBox(
+                              width: 12,
+                            ),
+                            Text(
+                              "Perjalanan Dinas",
                               style: textTheme.bodyLarge!.copyWith(
                                 color: const Color(0xFF383838),
                               ),
@@ -169,7 +214,7 @@ class ProfileView extends GetView<ProfileController> {
                         },
                         child: Row(
                           children: [
-                            SvgPicture.asset("assets/icons/exit.svg"),
+                            const Icon(Icons.mobile_screen_share),
                             const SizedBox(
                               width: 12,
                             ),
@@ -181,7 +226,7 @@ class ProfileView extends GetView<ProfileController> {
                             ),
                           ],
                         ),
-                      )
+                      ),
                     ],
                   ),
                 ),

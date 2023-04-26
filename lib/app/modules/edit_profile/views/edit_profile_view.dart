@@ -88,7 +88,7 @@ class EditProfileView extends GetView<EditProfileController> {
                           width: 40,
                           margin: const EdgeInsets.only(top: 60, left: 60),
                           decoration: BoxDecoration(
-                            color: Colors.red,
+                            color: ColorConstants.redColor,
                             borderRadius: BorderRadius.circular(
                               30,
                             ),

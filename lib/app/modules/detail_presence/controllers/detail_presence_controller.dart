@@ -33,16 +33,4 @@ class DetailPresenceController extends GetxController
     getDetailPresence(Get.arguments);
     super.onInit();
   }
-
-  @override
-  void onReady() {
-    super.onReady();
-  }
-
-  @override
-  void onClose() {
-    super.onClose();
-  }
-
-  void increment() => count.value++;
 }

@@ -7,11 +7,12 @@ abstract class Routes {
   static const login = _Paths.login;
   static const profile = _Paths.profile;
   static const editProfile = _Paths.editProfile;
-  static const changePassword = _Paths.changePassword;
   static const presenceHistory = _Paths.presenceHistory;
   static const changeDevice = _Paths.changeDevice;
   static const detailPresence = _Paths.detailPresence;
-  static const PERMISSION = _Paths.PERMISSION;
+  static const permission = _Paths.permission;
+  static const bussinessTrip = _Paths.bussinessTrip;
+  static const splash = _Paths.splash;
 }
 
 abstract class _Paths {
@@ -20,9 +21,10 @@ abstract class _Paths {
   static const login = '/login';
   static const profile = '/profile';
   static const editProfile = '/edit-profile';
-  static const changePassword = '/change-password';
   static const presenceHistory = '/presence-history';
   static const changeDevice = '/change-device';
   static const detailPresence = '/detail-presence';
-  static const PERMISSION = '/permission';
+  static const permission = '/permission';
+  static const bussinessTrip = '/bussiness-trip';
+  static const splash = '/splash';
 }
