@@ -3,6 +3,7 @@ import 'package:bkd_presence/app/routes/app_pages.dart';
 import 'package:bkd_presence/app/themes/color_constants.dart';
 import 'package:bkd_presence/app/themes/constants.dart';
 import 'package:bkd_presence/app/themes/themes.dart';
+import 'package:bkd_presence/app/widgets/button.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -576,6 +577,48 @@ class HomeView extends GetView<HomeController> {
           );
         },
         onLoading: const HomeLoading(),
+        onError: (error) {
+          return SafeArea(
+            child: RefreshIndicator(
+                onRefresh: () async {
+                  await controller.getUser();
+                },
+                child: SingleChildScrollView(
+                  padding: const EdgeInsets.all(24),
+                  child: SizedBox(
+                    width: Get.width,
+                    height: Get.height - 50,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          "Data User Tidak Berhasil Diload Silahkan Refresh Kembali atau Tekan Tombol Refresh Dibawah ini",
+                          textAlign: TextAlign.center,
+                          style: textTheme.bodyMedium,
+                        ),
+                        const SizedBox(
+                          height: 24,
+                        ),
+                        Button(
+                          onPressed: () async {
+                            await controller.getUser();
+                          },
+                          height: 41,
+                          width: 150,
+                          child: Text(
+                            "Refresh",
+                            style: textTheme.bodyMedium!.copyWith(
+                              color: Colors.white,
+                              fontWeight: FontWeight.w700,
+                            ),
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                )),
+          );
+        },
       ),
       bottomNavigationBar: Obx(
         () => BottomAppBar(
