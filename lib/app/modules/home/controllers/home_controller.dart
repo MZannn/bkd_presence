@@ -3,6 +3,7 @@ import 'dart:math';
 
 import 'package:bkd_presence/app/models/user_model.dart';
 import 'package:bkd_presence/app/modules/home/provider/home_provider.dart';
+import 'package:bkd_presence/app/routes/app_pages.dart';
 import 'package:bkd_presence/app/themes/color_constants.dart';
 import 'package:bkd_presence/app/themes/constants.dart';
 import 'package:flutter/material.dart';
@@ -95,7 +96,7 @@ class HomeController extends GetxController with StateMixin<UserModel> {
           final distance = calculateDistance(Constants.latitude,
               Constants.longitude, position.latitude, position.longitude);
           final isLate = now.hour > Constants.maxAttendanceHour;
-          final entryStatus = isLate ? 'Terlambat' : '';
+          final entryStatus = isLate ? 'Terlambat' : 'HADIR';
 
           if (distance <= Constants.maxAttendanceDistance && !mock) {
             if (state != null) {
@@ -147,7 +148,7 @@ class HomeController extends GetxController with StateMixin<UserModel> {
       {
         'attendance_clock': attendanceClock,
         'entry_position': entryPosition,
-        'entry_distance': entryDistance,
+        'entry_distance': entryDistance * 1000, // convert to meter
         'attendance_entry_status': entryStatus,
       },
     );
@@ -160,7 +161,7 @@ class HomeController extends GetxController with StateMixin<UserModel> {
         Constants.longitude, latitude.value, longitude.value);
     var body = {
       "attendance_clock_out": DateFormat('HH:mm:ss').format(now),
-      "attendance_exit_status": "Hadir",
+      "attendance_exit_status": "HADIR",
       "exit_position": "${latitude.value}, ${longitude.value}",
       "exit_distance": exitDistance,
     };
@@ -201,6 +202,8 @@ class HomeController extends GetxController with StateMixin<UserModel> {
       final user = await _homeProvider.getUsers();
       Constants.latitude = double.parse(user!.data!.user!.office!.latitude!);
       Constants.longitude = double.parse(user.data!.user!.office!.longitude!);
+      Constants.maxAttendanceDistance =
+          double.parse(user.data!.user!.office!.radius!);
       change(user, status: RxStatus.success());
       this.user = user;
 
@@ -215,7 +218,7 @@ class HomeController extends GetxController with StateMixin<UserModel> {
             actions: [
               TextButton(
                 onPressed: () {
-                  Get.offAllNamed('/login');
+                  Get.offAllNamed(Routes.login);
                 },
                 child: const Text('OK'),
               ),
@@ -231,7 +234,7 @@ class HomeController extends GetxController with StateMixin<UserModel> {
   Future<String> formatDate(String date) async {
     DateTime dateTime = DateTime.parse(date);
     String formattedDate =
-        DateFormat('EEEE, yyyy-MM-dd', 'id_ID').format(dateTime);
+        DateFormat('EEEE, dd-MM-yyyy', 'id_ID').format(dateTime);
 
     return formattedDate;
   }
@@ -290,7 +293,7 @@ class HomeController extends GetxController with StateMixin<UserModel> {
       );
     } else if (isMockLocation == false &&
         now.isAfter(clockOut) &&
-        distance <= 0.05) {
+        distance <= Constants.maxAttendanceDistance) {
       await presenceOut();
     } else {
       Get.rawSnackbar(
@@ -318,7 +321,6 @@ class HomeController extends GetxController with StateMixin<UserModel> {
       now = now.add(const Duration(seconds: 1));
     });
     isWaiting.value = false;
-    await mockGpsChecker();
     checkLocationChanges();
     await determinePosition().then((value) async {
       difference = now.difference(value.timestamp!);
@@ -327,8 +329,8 @@ class HomeController extends GetxController with StateMixin<UserModel> {
         zoom: 14,
       );
     });
-    await getUser();
     isLoading.value = false;
+    await getUser();
     super.onInit();
   }
 }

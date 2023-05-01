@@ -87,7 +87,7 @@ class PermissionView extends GetView<PermissionController> {
                     "Kirim",
                     style: textTheme.bodyMedium!.copyWith(
                       color: Colors.white,
-                      fontWeight: FontWeight.w500,
+                      fontWeight: FontWeight.w700,
                     ),
                   ),
                 ),

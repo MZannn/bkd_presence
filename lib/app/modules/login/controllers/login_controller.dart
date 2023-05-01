@@ -1,4 +1,5 @@
 import 'package:bkd_presence/app/modules/login/provider/login_provider.dart';
+import 'package:bkd_presence/app/routes/app_pages.dart';
 import 'package:bkd_presence/app/themes/color_constants.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/material.dart';
@@ -41,7 +42,7 @@ class LoginController extends GetxController {
       SharedPreferences preferences = await SharedPreferences.getInstance();
       if (response['code'] == 200) {
         preferences.setString('token', response['data']['access_token']);
-        Get.offAllNamed('/home');
+        Get.offAllNamed(Routes.home);
       } else if (response['code'] == 401) {
         Get.rawSnackbar(
           message: '${response['message']}',

@@ -79,7 +79,7 @@ class ChangeDeviceView extends GetView<ChangeDeviceController> {
                       "Ajukan Permintaan Ganti Device",
                       style: textTheme.bodyMedium!.copyWith(
                         color: Colors.white,
-                        fontWeight: FontWeight.w600,
+                        fontWeight: FontWeight.w700,
                       ),
                     ),
                   ),

@@ -8,11 +8,16 @@ class SplashController extends GetxController {
   SharedPreferences? prefs;
 
   @override
+  void onInit() async {
+    super.onInit();
+  }
+
+  @override
   void onReady() async {
     prefs = await SharedPreferences.getInstance();
     var token = prefs!.getString('token');
     print(token);
-    Future.delayed(const Duration(seconds: 1, milliseconds: 15), () {
+    Future.delayed(const Duration(seconds: 1, milliseconds: 15), () async {
       if (token == null) {
         Get.offAllNamed(Routes.login);
       } else {

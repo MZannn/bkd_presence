@@ -1,4 +1,5 @@
 import 'package:bkd_presence/app/models/user_model.dart';
+import 'package:bkd_presence/app/routes/app_pages.dart';
 import 'package:bkd_presence/app/themes/color_constants.dart';
 import 'package:bkd_presence/app/themes/themes.dart';
 import 'package:flutter/material.dart';
@@ -92,7 +93,7 @@ class ProfileView extends GetView<ProfileController> {
                           ),
                           GestureDetector(
                             onTap: () {
-                              Get.toNamed('edit-profile', arguments: {
+                              Get.toNamed(Routes.editProfile, arguments: {
                                 'name': user?.data?.user?.name,
                                 'position': user?.data?.user?.position,
                                 'phoneNumber': user?.data?.user?.phoneNumber,
@@ -154,7 +155,7 @@ class ProfileView extends GetView<ProfileController> {
                     children: [
                       InkWell(
                         onTap: () {
-                          Get.toNamed('/permission', arguments: {
+                          Get.toNamed(Routes.permission, arguments: {
                             'employee_id': user?.data?.user?.nip,
                             'office_id': user?.data?.user?.officeId,
                             'presence_id': user?.data?.presences?.first.id,
@@ -181,7 +182,7 @@ class ProfileView extends GetView<ProfileController> {
                       ),
                       InkWell(
                         onTap: () {
-                          Get.toNamed('/bussiness-trip', arguments: {
+                          Get.toNamed(Routes.bussinessTrip, arguments: {
                             'employee_id': user?.data?.user?.nip,
                             'office_id': user?.data?.user?.officeId,
                             'presence_id': user?.data?.presences?.first.id,
@@ -207,7 +208,33 @@ class ProfileView extends GetView<ProfileController> {
                       ),
                       InkWell(
                         onTap: () {
-                          Get.toNamed('/change-device', arguments: [
+                          Get.toNamed(Routes.vacation, arguments: {
+                            'employee_id': user?.data?.user?.nip,
+                            'office_id': user?.data?.user?.officeId,
+                            'presence_id': user?.data?.presences?.first.id,
+                          });
+                        },
+                        child: Row(
+                          children: [
+                            const Icon(Icons.map_rounded),
+                            const SizedBox(
+                              width: 12,
+                            ),
+                            Text(
+                              "Cuti",
+                              style: textTheme.bodyLarge!.copyWith(
+                                color: const Color(0xFF383838),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 16,
+                      ),
+                      InkWell(
+                        onTap: () {
+                          Get.toNamed(Routes.changeDevice, arguments: [
                             user?.data?.user?.nip,
                             user?.data?.user?.officeId,
                           ]);

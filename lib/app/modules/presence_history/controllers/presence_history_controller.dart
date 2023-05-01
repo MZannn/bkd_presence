@@ -21,7 +21,7 @@ class PresenceHistoryController extends GetxController
   Future<String> formatDate(String date) async {
     DateTime dateTime = DateTime.parse(date);
     String formattedDate =
-        DateFormat('EEEE, yyyy-MM-dd', 'id_ID').format(dateTime);
+        DateFormat('EEEE, dd-MM-yyyy', 'id_ID').format(dateTime);
 
     return formattedDate;
   }

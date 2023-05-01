@@ -1,4 +1,5 @@
 import 'package:bkd_presence/app/modules/profile/views/profile_view.dart';
+import 'package:bkd_presence/app/routes/app_pages.dart';
 import 'package:bkd_presence/app/themes/color_constants.dart';
 import 'package:bkd_presence/app/themes/constants.dart';
 import 'package:bkd_presence/app/themes/themes.dart';
@@ -30,7 +31,7 @@ class HomeView extends GetView<HomeController> {
           DateTime dateTime =
               DateTime.parse("${state?.data?.presences?.first.presenceDate}");
           var presencesDate =
-              DateFormat('EEEE, yyyy-MM-dd', 'id_ID').format(dateTime);
+              DateFormat('EEEE, dd-MM-yyyy', 'id_ID').format(dateTime);
 
           getInitials(name!);
           return Obx(
@@ -171,7 +172,8 @@ class HomeView extends GetView<HomeController> {
                                                   const CircleId("circle"),
                                               center: LatLng(Constants.latitude,
                                                   Constants.longitude),
-                                              radius: 0.05 *
+                                              radius: Constants
+                                                      .maxAttendanceDistance *
                                                   1000, // convert ke meter
                                               strokeWidth: 1,
                                               strokeColor: Colors.blue,
@@ -216,7 +218,7 @@ class HomeView extends GetView<HomeController> {
                                       ),
                                       GestureDetector(
                                         onTap: () {
-                                          Get.toNamed('/detail-presence',
+                                          Get.toNamed(Routes.detailPresence,
                                               arguments: state
                                                   ?.data?.presences?.first.id);
                                         },
@@ -371,7 +373,8 @@ class HomeView extends GetView<HomeController> {
                                           ),
                                           TextButton(
                                             onPressed: () {
-                                              Get.toNamed('/presence-history');
+                                              Get.toNamed(
+                                                  Routes.presenceHistory);
                                             },
                                             child: const Text("Lebih banyak"),
                                           ),
@@ -394,7 +397,7 @@ class HomeView extends GetView<HomeController> {
                                                 return GestureDetector(
                                                   onTap: () {
                                                     Get.toNamed(
-                                                        '/detail-presence',
+                                                        Routes.detailPresence,
                                                         arguments: state
                                                             ?.data
                                                             ?.presences?[index]

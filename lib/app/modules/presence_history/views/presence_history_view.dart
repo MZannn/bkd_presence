@@ -1,3 +1,4 @@
+import 'package:bkd_presence/app/routes/app_pages.dart';
 import 'package:bkd_presence/app/themes/color_constants.dart';
 import 'package:bkd_presence/app/themes/themes.dart';
 import 'package:bkd_presence/app/widgets/custom_app_bar.dart';
@@ -33,7 +34,7 @@ class PresenceHistoryView extends GetView<PresenceHistoryController> {
                   return GestureDetector(
                     onTap: () {
                       Get.toNamed(
-                        '/detail-presence',
+                        Routes.detailPresence,
                         arguments: state?.data?.presences?[index].id,
                       );
                     },

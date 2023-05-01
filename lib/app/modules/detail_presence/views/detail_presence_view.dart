@@ -67,17 +67,6 @@ class DetailPresenceView extends GetView<DetailPresenceController> {
                                     "-",
                                 style: textTheme.labelSmall,
                               ),
-                              Text(
-                                state?.data?.detailPresence
-                                            ?.attendanceEntryStatus
-                                            ?.toUpperCase() ==
-                                        "TERLAMBAT"
-                                    ? " (Terlambat)"
-                                    : "",
-                                style: textTheme.bodyMedium!.copyWith(
-                                  color: ColorConstants.redColor,
-                                ),
-                              ),
                             ],
                           ),
                           const SizedBox(
@@ -92,9 +81,19 @@ class DetailPresenceView extends GetView<DetailPresenceController> {
                               ),
                               Text(
                                 state?.data?.detailPresence
-                                        ?.attendanceEntryStatus ??
+                                        ?.attendanceEntryStatus
+                                        ?.toUpperCase() ??
                                     "-",
-                                style: textTheme.labelSmall,
+                                style: state?.data?.detailPresence
+                                            ?.attendanceEntryStatus ==
+                                        "Terlambat"
+                                    ? textTheme.labelSmall!.copyWith(
+                                        color: ColorConstants.redColor,
+                                        fontWeight: FontWeight.w700,
+                                      )
+                                    : textTheme.labelSmall!.copyWith(
+                                        fontWeight: FontWeight.w700,
+                                      ),
                               ),
                             ],
                           ),
@@ -126,7 +125,7 @@ class DetailPresenceView extends GetView<DetailPresenceController> {
                                 style: textTheme.labelSmall,
                               ),
                               Text(
-                                '${state?.data?.detailPresence?.entryDistance ?? "-"} Km',
+                                '${state?.data?.detailPresence?.entryDistance ?? "-"} m',
                                 style: textTheme.labelSmall,
                               ),
                             ],
@@ -168,9 +167,12 @@ class DetailPresenceView extends GetView<DetailPresenceController> {
                               ),
                               Text(
                                 state?.data?.detailPresence
-                                        ?.attendanceExitStatus ??
+                                        ?.attendanceExitStatus
+                                        ?.toUpperCase() ??
                                     "-",
-                                style: textTheme.labelSmall,
+                                style: textTheme.labelSmall!.copyWith(
+                                  fontWeight: FontWeight.w700,
+                                ),
                               ),
                             ],
                           ),
@@ -202,7 +204,7 @@ class DetailPresenceView extends GetView<DetailPresenceController> {
                                 style: textTheme.labelSmall,
                               ),
                               Text(
-                                '${state?.data?.detailPresence?.exitDistance ?? "-"} Km',
+                                '${state?.data?.detailPresence?.exitDistance ?? "-"} m',
                                 style: textTheme.labelSmall,
                               ),
                             ],

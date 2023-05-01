@@ -13,6 +13,7 @@ abstract class Routes {
   static const permission = _Paths.permission;
   static const bussinessTrip = _Paths.bussinessTrip;
   static const splash = _Paths.splash;
+  static const vacation = _Paths.vacation;
 }
 
 abstract class _Paths {
@@ -27,4 +28,5 @@ abstract class _Paths {
   static const permission = '/permission';
   static const bussinessTrip = '/bussiness-trip';
   static const splash = '/splash';
+  static const vacation = '/vacation';
 }

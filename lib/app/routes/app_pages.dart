@@ -20,8 +20,9 @@ import '../modules/presence_history/bindings/presence_history_binding.dart';
 import '../modules/presence_history/views/presence_history_view.dart';
 import '../modules/profile/bindings/profile_binding.dart';
 import '../modules/profile/views/profile_view.dart';
-
 import '../modules/splash/views/splash_view.dart';
+import '../modules/vacation/bindings/vacation_binding.dart';
+import '../modules/vacation/views/vacation_view.dart';
 
 part 'app_routes.dart';
 
@@ -36,18 +37,12 @@ class AppPages {
     GetPage(
       name: _Paths.home,
       page: () => const HomeView(),
-      bindings: [
-        GlobalBinding(),
-        HomeBinding(),
-      ],
+      binding: HomeBinding(),
     ),
     GetPage(
       name: _Paths.login,
       page: () => const LoginView(),
-      bindings: [
-        GlobalBinding(),
-        LoginBinding(),
-      ],
+      binding: LoginBinding(),
     ),
     GetPage(
       name: _Paths.profile,
@@ -87,6 +82,12 @@ class AppPages {
     GetPage(
       name: _Paths.splash,
       page: () => const SplashView(),
+      binding: GlobalBinding(),
+    ),
+    GetPage(
+      name: _Paths.vacation,
+      page: () => const VacationView(),
+      binding: VacationBinding(),
     ),
   ];
 }

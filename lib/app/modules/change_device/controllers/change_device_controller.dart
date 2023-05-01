@@ -1,4 +1,5 @@
 import 'package:bkd_presence/app/modules/change_device/provider/change_device_provider.dart';
+import 'package:bkd_presence/app/routes/app_pages.dart';
 import 'package:bkd_presence/app/themes/color_constants.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -25,7 +26,7 @@ class ChangeDeviceController extends GetxController {
           borderRadius: 8,
           duration: const Duration(seconds: 3),
         );
-        Get.offAllNamed('/home');
+        Get.offAllNamed(Routes.home);
       } else {
         Get.rawSnackbar(
           message: changeDevice['message'],

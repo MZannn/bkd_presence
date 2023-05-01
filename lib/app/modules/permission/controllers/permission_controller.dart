@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:bkd_presence/app/modules/permission/provider/permission_provider.dart';
+import 'package:bkd_presence/app/routes/app_pages.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -90,7 +91,7 @@ class PermissionController extends GetxController {
               actions: [
                 TextButton(
                   onPressed: () {
-                    Get.offAllNamed('/home');
+                    Get.offAllNamed(Routes.home);
                   },
                   child: const Text('OK'),
                 ),

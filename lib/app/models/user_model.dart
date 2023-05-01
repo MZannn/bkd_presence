@@ -1,18 +1,15 @@
-// To parse this JSON data, do
-//
-//     final user = userFromJson(jsonString);
 class UserModel {
+  int? code;
+  String? status;
+  String? message;
+  Data? data;
+
   UserModel({
     this.code,
     this.status,
     this.message,
     this.data,
   });
-
-  int? code;
-  String? status;
-  String? message;
-  Data? data;
 
   factory UserModel.fromJson(Map<String, dynamic> json) => UserModel(
         code: json["code"],
@@ -23,16 +20,16 @@ class UserModel {
 }
 
 class Data {
+  User? user;
+  List<Presence>? presences;
+
   Data({
     this.user,
     this.presences,
   });
 
-  UserClass? user;
-  List<Presence>? presences;
-
   factory Data.fromJson(Map<String, dynamic> json) => Data(
-        user: json["user"] == null ? null : UserClass.fromJson(json["user"]),
+        user: json["user"] == null ? null : User.fromJson(json["user"]),
         presences: json["presences"] == null
             ? []
             : List<Presence>.from(
@@ -41,6 +38,19 @@ class Data {
 }
 
 class Presence {
+  int? id;
+  String? employeeId;
+  String? officeId;
+  String? attendanceClock;
+  String? attendanceClockOut;
+  DateTime? presenceDate;
+  String? attendanceEntryStatus;
+  String? attendanceExitStatus;
+  String? entryPosition;
+  String? entryDistance;
+  String? exitPosition;
+  String? exitDistance;
+
   Presence({
     this.id,
     this.employeeId,
@@ -56,28 +66,13 @@ class Presence {
     this.exitDistance,
   });
 
-  int? id;
-  String? employeeId;
-  String? officeId;
-  dynamic attendanceClock;
-  dynamic attendanceClockOut;
-  DateTime? presenceDate;
-  String? attendanceEntryStatus;
-  String? attendanceExitStatus;
-  String? entryPosition;
-  String? entryDistance;
-  String? exitPosition;
-  String? exitDistance;
-
   factory Presence.fromJson(Map<String, dynamic> json) => Presence(
         id: json["id"],
         employeeId: json["employee_id"],
         officeId: json["office_id"],
         attendanceClock: json["attendance_clock"],
         attendanceClockOut: json["attendance_clock_out"],
-        presenceDate: json["presence_date"] == null
-            ? null
-            : DateTime.parse(json["presence_date"]),
+        presenceDate: DateTime.parse(json["presence_date"]),
         attendanceEntryStatus: json["attendance_entry_status"],
         attendanceExitStatus: json["attendance_exit_status"],
         entryPosition: json["entry_position"],
@@ -87,8 +82,17 @@ class Presence {
       );
 }
 
-class UserClass {
-  UserClass({
+class User {
+  String? nip;
+  String? name;
+  String? position;
+  String? phoneNumber;
+  dynamic profilePhotoPath;
+  String? deviceId;
+  String? officeId;
+  Office? office;
+
+  User({
     this.nip,
     this.name,
     this.position,
@@ -99,16 +103,7 @@ class UserClass {
     this.office,
   });
 
-  String? nip;
-  String? name;
-  String? position;
-  String? phoneNumber;
-  String? profilePhotoPath;
-  String? deviceId;
-  String? officeId;
-  Office? office;
-
-  factory UserClass.fromJson(Map<String, dynamic> json) => UserClass(
+  factory User.fromJson(Map<String, dynamic> json) => User(
         nip: json["nip"],
         name: json["name"],
         position: json["position"],
@@ -121,19 +116,21 @@ class UserClass {
 }
 
 class Office {
+  int? id;
+  String? name;
+  String? address;
+  String? latitude;
+  String? longitude;
+  String? radius;
+
   Office({
     this.id,
     this.name,
     this.address,
     this.latitude,
     this.longitude,
+    this.radius,
   });
-
-  int? id;
-  String? name;
-  String? address;
-  String? latitude;
-  String? longitude;
 
   factory Office.fromJson(Map<String, dynamic> json) => Office(
         id: json["id"],
@@ -141,5 +138,6 @@ class Office {
         address: json["address"],
         latitude: json["latitude"],
         longitude: json["longitude"],
+        radius: json["radius"],
       );
 }

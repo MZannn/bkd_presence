@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:bkd_presence/app/models/user_model.dart';
 import 'package:bkd_presence/app/modules/edit_profile/provider/edit_profile_provider.dart';
+import 'package:bkd_presence/app/routes/app_pages.dart';
 import 'package:bkd_presence/app/themes/color_constants.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
@@ -26,7 +27,7 @@ class EditProfileController extends GetxController with StateMixin<UserModel?> {
 
       change(response, status: RxStatus.success());
       if (response!.code == 200) {
-        Get.offAllNamed('/home');
+        Get.offAllNamed(Routes.home);
         Get.rawSnackbar(
           message: 'Berhasil Mengubah Profile',
           backgroundColor: ColorConstants.mainColor,
