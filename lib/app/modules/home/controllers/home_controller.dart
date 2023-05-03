@@ -24,6 +24,8 @@ class HomeController extends GetxController with StateMixin<UserModel> {
   late DateTime now;
   late bool isMockLocation;
   late DateTime clockOut;
+  late DateTime maximalLate;
+  late DateTime attendanceStartHour;
 
   late Duration difference;
   late CameraPosition cameraPosition;
@@ -95,10 +97,12 @@ class HomeController extends GetxController with StateMixin<UserModel> {
         if (userPresence?.attendanceClock == null) {
           final distance = calculateDistance(Constants.latitude,
               Constants.longitude, position.latitude, position.longitude);
-          final isLate = now.hour > Constants.maxAttendanceHour;
-          final entryStatus = isLate ? 'Terlambat' : 'HADIR';
-
-          if (distance <= Constants.maxAttendanceDistance && !mock) {
+          final isLate = now.isAfter(Constants.maxAttendanceHour);
+          final entryStatus = isLate ? 'TERLAMBAT' : 'HADIR';
+          if (distance <= Constants.maxAttendanceDistance &&
+              !mock &&
+              attendanceStartHour.isAfter(now) &&
+              maximalLate.isBefore(now)) {
             if (state != null) {
               change(null, status: RxStatus.loading());
             }
@@ -307,8 +311,12 @@ class HomeController extends GetxController with StateMixin<UserModel> {
     }
   }
 
-  Future<DateTime> out() async {
-    return DateTime(now.year, now.month, now.day, 15, 30, 0);
+  Future hourAttendance() async {
+    clockOut = DateTime(now.year, now.month, now.day, 15, 30, 0);
+    Constants.maxAttendanceHour =
+        DateTime(now.year, now.month, now.day, 8, 0, 0);
+    maximalLate = DateTime(now.year, now.month, now.day, 8, 45, 0);
+    attendanceStartHour = DateTime(now.year, now.month, now.day, 7, 0, 0);
   }
 
   @override
@@ -316,10 +324,11 @@ class HomeController extends GetxController with StateMixin<UserModel> {
     isLoading.value = true;
     isWaiting.value = true;
     now = await fetchTime();
-    clockOut = await out();
+    await hourAttendance();
     Timer.periodic(const Duration(seconds: 1), (timer) {
       now = now.add(const Duration(seconds: 1));
     });
+    await getUser();
     isWaiting.value = false;
     checkLocationChanges();
     await determinePosition().then((value) async {
@@ -330,7 +339,6 @@ class HomeController extends GetxController with StateMixin<UserModel> {
       );
     });
     isLoading.value = false;
-    await getUser();
     super.onInit();
   }
 }

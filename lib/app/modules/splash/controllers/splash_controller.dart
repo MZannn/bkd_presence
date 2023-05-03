@@ -8,11 +8,6 @@ class SplashController extends GetxController {
   SharedPreferences? prefs;
 
   @override
-  void onInit() async {
-    super.onInit();
-  }
-
-  @override
   void onReady() async {
     prefs = await SharedPreferences.getInstance();
     var token = prefs!.getString('token');

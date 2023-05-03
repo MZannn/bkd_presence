@@ -260,7 +260,12 @@ class HomeView extends GetView<HomeController> {
                                                             .labelMedium,
                                                       ),
                                                       Text(
-                                                        '${state?.data?.presences?.first.attendanceClock ?? "-"}',
+                                                        state
+                                                                ?.data
+                                                                ?.presences
+                                                                ?.first
+                                                                .attendanceClock ??
+                                                            "-",
                                                         style: textTheme
                                                             .bodyMedium!
                                                             .copyWith(
@@ -328,7 +333,12 @@ class HomeView extends GetView<HomeController> {
                                                             .labelMedium,
                                                       ),
                                                       Text(
-                                                        '${state?.data?.presences?.first.attendanceClockOut ?? '-'}',
+                                                        state
+                                                                ?.data
+                                                                ?.presences
+                                                                ?.first
+                                                                .attendanceClockOut ??
+                                                            '-',
                                                         style: textTheme
                                                             .bodyMedium!
                                                             .copyWith(
@@ -445,7 +455,12 @@ class HomeView extends GetView<HomeController> {
                                                                     style: textTheme
                                                                         .labelMedium),
                                                                 Text(
-                                                                  '${state?.data?.presences?[index].attendanceClock ?? "-"}',
+                                                                  state
+                                                                          ?.data
+                                                                          ?.presences?[
+                                                                              index]
+                                                                          .attendanceClock ??
+                                                                      "-",
                                                                   style: textTheme
                                                                       .bodyMedium!
                                                                       .copyWith(
