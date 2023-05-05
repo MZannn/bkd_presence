@@ -22,7 +22,7 @@ class HomeController extends GetxController with StateMixin<UserModel> {
   RxBool isWaiting = false.obs;
   RxInt selectedIndex = 0.obs;
   late DateTime now;
-  late bool isMockLocation;
+  RxBool isMockLocation = false.obs;
   late DateTime clockOut;
   late DateTime maximalLate;
   late DateTime attendanceStartHour;
@@ -30,24 +30,6 @@ class HomeController extends GetxController with StateMixin<UserModel> {
   late Duration difference;
   late CameraPosition cameraPosition;
   UserModel? user;
-  Future<Position> getUserCurrentLocation() async {
-    await Geolocator.requestPermission()
-        .then((value) {})
-        .onError((error, stackTrace) async {
-      await Geolocator.requestPermission();
-    });
-    Position positon = await Geolocator.getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.high,
-        forceAndroidLocationManager: true);
-    return positon;
-  }
-
-  Future<bool> mockGpsChecker() async {
-    bool isMock = await getUserCurrentLocation().then((value) {
-      return value.isMocked;
-    });
-    return isMockLocation = isMock;
-  }
 
   Future<Position> determinePosition() async {
     bool serviceEnabled;
@@ -90,8 +72,8 @@ class HomeController extends GetxController with StateMixin<UserModel> {
     )).listen((Position position) async {
       latitude.value = position.latitude;
       longitude.value = position.longitude;
+      isMockLocation.value = position.isMocked;
       try {
-        final mock = await mockGpsChecker();
         final userPresence = state?.data?.presences?.first;
 
         if (userPresence?.attendanceClock == null) {
@@ -100,9 +82,9 @@ class HomeController extends GetxController with StateMixin<UserModel> {
           final isLate = now.isAfter(Constants.maxAttendanceHour);
           final entryStatus = isLate ? 'TERLAMBAT' : 'HADIR';
           if (distance <= Constants.maxAttendanceDistance &&
-              !mock &&
-              attendanceStartHour.isAfter(now) &&
-              maximalLate.isBefore(now)) {
+              isMockLocation.value == false &&
+              now.isAfter(attendanceStartHour) &&
+              now.isBefore(maximalLate)) {
             if (state != null) {
               change(null, status: RxStatus.loading());
             }
@@ -123,7 +105,7 @@ class HomeController extends GetxController with StateMixin<UserModel> {
               borderRadius: 8,
               duration: const Duration(seconds: 3),
             );
-          } else if (mock) {
+          } else if (isMockLocation.value == true) {
             Get.rawSnackbar(
               message: 'Anda terdeteksi menggunakan fake GPS',
               backgroundColor: ColorConstants.redColor,
@@ -210,7 +192,6 @@ class HomeController extends GetxController with StateMixin<UserModel> {
           double.parse(user.data!.user!.office!.radius!);
       change(user, status: RxStatus.success());
       this.user = user;
-
       if (user.data?.user?.deviceId == null && token != null) {
         await _homeProvider.logout();
         prefs.clear();
@@ -255,7 +236,6 @@ class HomeController extends GetxController with StateMixin<UserModel> {
   }
 
   Future<void> presenceOutChecker() async {
-    await mockGpsChecker();
     var distance = calculateDistance(Constants.latitude, Constants.longitude,
         latitude.value, longitude.value);
     if (now.weekday == DateTime.saturday || now.weekday == DateTime.sunday) {
@@ -286,7 +266,7 @@ class HomeController extends GetxController with StateMixin<UserModel> {
         snackPosition: SnackPosition.BOTTOM,
         duration: const Duration(seconds: 3),
       );
-    } else if (isMockLocation == true) {
+    } else if (isMockLocation.value == true) {
       Get.rawSnackbar(
         message: 'Anda Terdeteksi Menggunakan Fake GPS',
         backgroundColor: ColorConstants.redColor,
@@ -295,7 +275,7 @@ class HomeController extends GetxController with StateMixin<UserModel> {
         snackPosition: SnackPosition.BOTTOM,
         duration: const Duration(seconds: 3),
       );
-    } else if (isMockLocation == false &&
+    } else if (isMockLocation.value == false &&
         now.isAfter(clockOut) &&
         distance <= Constants.maxAttendanceDistance) {
       await presenceOut();
@@ -315,21 +295,19 @@ class HomeController extends GetxController with StateMixin<UserModel> {
     clockOut = DateTime(now.year, now.month, now.day, 15, 30, 0);
     Constants.maxAttendanceHour =
         DateTime(now.year, now.month, now.day, 8, 0, 0);
-    maximalLate = DateTime(now.year, now.month, now.day, 8, 45, 0);
+    maximalLate = DateTime(now.year, now.month, now.day, 15, 45, 0);
     attendanceStartHour = DateTime(now.year, now.month, now.day, 7, 0, 0);
   }
 
   @override
   void onInit() async {
     isLoading.value = true;
-    isWaiting.value = true;
+    await getUser();
     now = await fetchTime();
     await hourAttendance();
     Timer.periodic(const Duration(seconds: 1), (timer) {
       now = now.add(const Duration(seconds: 1));
     });
-    await getUser();
-    isWaiting.value = false;
     checkLocationChanges();
     await determinePosition().then((value) async {
       difference = now.difference(value.timestamp!);

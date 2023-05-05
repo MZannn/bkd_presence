@@ -704,7 +704,7 @@ class HomeView extends GetView<HomeController> {
         ),
       ),
       floatingActionButton: Obx(() {
-        if (controller.isWaiting.value == true) {
+        if (controller.isLoading.value == true) {
           return const SizedBox();
         }
         return FloatingActionButton(
