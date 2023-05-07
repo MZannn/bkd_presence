@@ -86,7 +86,7 @@ class DetailPresenceView extends GetView<DetailPresenceController> {
                                     "-",
                                 style: state?.data?.detailPresence
                                             ?.attendanceEntryStatus ==
-                                        "Terlambat"
+                                        "TERLAMBAT"
                                     ? textTheme.labelSmall!.copyWith(
                                         color: ColorConstants.redColor,
                                         fontWeight: FontWeight.w700,

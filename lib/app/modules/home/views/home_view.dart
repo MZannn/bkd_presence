@@ -123,19 +123,25 @@ class HomeView extends GetView<HomeController> {
                                           const SizedBox(
                                             width: 12,
                                           ),
-                                          Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Text(
-                                                '${state?.data?.user?.name}',
-                                                style: textTheme.bodyLarge,
-                                              ),
-                                              Text(
-                                                '${state?.data?.user?.position}',
-                                                style: textTheme.bodySmall,
-                                              ),
-                                            ],
+                                          Flexible(
+                                            child: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Text(
+                                                  '${state?.data?.user?.name}',
+                                                  style: textTheme.bodyLarge,
+                                                  overflow: TextOverflow.clip,
+                                                  maxLines: 1,
+                                                ),
+                                                Text(
+                                                  '${state?.data?.user?.position}',
+                                                  style: textTheme.bodySmall,
+                                                  overflow: TextOverflow.clip,
+                                                  maxLines: 1,
+                                                ),
+                                              ],
+                                            ),
                                           )
                                         ],
                                       ),
@@ -378,9 +384,13 @@ class HomeView extends GetView<HomeController> {
                                         mainAxisAlignment:
                                             MainAxisAlignment.spaceBetween,
                                         children: [
-                                          Text(
-                                            "Presensi 5 hari terakhir",
-                                            style: textTheme.labelMedium,
+                                          Flexible(
+                                            child: Text(
+                                              "Presensi 5 hari terakhir",
+                                              style: textTheme.labelMedium,
+                                              maxLines: 1,
+                                              overflow: TextOverflow.ellipsis,
+                                            ),
                                           ),
                                           TextButton(
                                             onPressed: () {

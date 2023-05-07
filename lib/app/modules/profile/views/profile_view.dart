@@ -127,13 +127,19 @@ class ProfileView extends GetView<ProfileController> {
                         '${user?.data?.user?.position}',
                         style:
                             textTheme.bodyMedium!.copyWith(color: Colors.white),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
                       ),
                       const SizedBox(
                         height: 6,
                       ),
-                      Text(
-                        '${user?.data?.user?.name}',
-                        style: textTheme.titleMedium,
+                      Flexible(
+                        child: Text(
+                          '${user?.data?.user?.name}',
+                          style: textTheme.titleMedium,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
                       ),
                       const SizedBox(
                         height: 6,
