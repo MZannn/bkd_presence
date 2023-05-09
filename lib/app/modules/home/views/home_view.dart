@@ -183,7 +183,7 @@ class HomeView extends GetView<HomeController> {
                                                       .maxAttendanceDistance *
                                                   1000, // convert ke meter
                                               strokeWidth: 1,
-                                              strokeColor: Colors.blue,
+                                              strokeColor: Colors.green,
                                               fillColor:
                                                   Colors.blue.withOpacity(0.1),
                                             ),
