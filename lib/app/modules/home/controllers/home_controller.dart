@@ -295,7 +295,7 @@ class HomeController extends GetxController with StateMixin<UserModel> {
     clockOut = DateTime(now.year, now.month, now.day, 15, 30, 0);
     Constants.maxAttendanceHour =
         DateTime(now.year, now.month, now.day, 8, 0, 0);
-    maximalLate = DateTime(now.year, now.month, now.day, 17, 0, 0);
+    maximalLate = DateTime(now.year, now.month, now.day, 9, 0, 0);
     attendanceStartHour = DateTime(now.year, now.month, now.day, 7, 0, 0);
   }
 
