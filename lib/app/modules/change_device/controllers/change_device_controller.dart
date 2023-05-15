@@ -11,7 +11,7 @@ class ChangeDeviceController extends GetxController {
 
   changeDevice() async {
     var body = {
-      'employee_id': Get.arguments[0],
+      'nip': Get.arguments[0],
       'office_id': Get.arguments[1],
       'reason': reasonController.text,
     };

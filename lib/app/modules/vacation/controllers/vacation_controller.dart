@@ -116,7 +116,7 @@ class VacationController extends GetxController {
   vacation() async {
     try {
       JSON body = {
-        'employee_id': Get.arguments['employee_id'],
+        'nip': Get.arguments['nip'],
         'office_id': Get.arguments['office_id'],
         'presence_id': Get.arguments['presence_id'],
         'start_date': startDateController.text,

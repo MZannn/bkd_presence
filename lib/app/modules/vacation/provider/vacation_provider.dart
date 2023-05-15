@@ -12,7 +12,7 @@ class VacationProvider {
 
   Future sendVacation(JSON body, File? file) async {
     final form = FormData({
-      'employee_id': body['employee_id'],
+      'nip': body['nip'],
       'office_id': body['office_id'],
       'presence_id': body['presence_id'],
       'start_date': body['start_date'],

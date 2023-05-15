@@ -162,7 +162,7 @@ class ProfileView extends GetView<ProfileController> {
                       InkWell(
                         onTap: () {
                           Get.toNamed(Routes.permission, arguments: {
-                            'employee_id': user?.data?.user?.nip,
+                            'nip': user?.data?.user?.nip,
                             'office_id': user?.data?.user?.officeId,
                             'presence_id': user?.data?.presences?.first.id,
                             'date': user?.data?.presences?.first.presenceDate,
@@ -189,7 +189,7 @@ class ProfileView extends GetView<ProfileController> {
                       InkWell(
                         onTap: () {
                           Get.toNamed(Routes.bussinessTrip, arguments: {
-                            'employee_id': user?.data?.user?.nip,
+                            'nip': user?.data?.user?.nip,
                             'office_id': user?.data?.user?.officeId,
                             'presence_id': user?.data?.presences?.first.id,
                           });
@@ -215,7 +215,7 @@ class ProfileView extends GetView<ProfileController> {
                       InkWell(
                         onTap: () {
                           Get.toNamed(Routes.vacation, arguments: {
-                            'employee_id': user?.data?.user?.nip,
+                            'nip': user?.data?.user?.nip,
                             'office_id': user?.data?.user?.officeId,
                             'presence_id': user?.data?.presences?.first.id,
                           });

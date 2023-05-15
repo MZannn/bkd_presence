@@ -37,7 +37,7 @@ class Data {
 class DetailPresence {
   DetailPresence({
     this.id,
-    this.employeeId,
+    this.nip,
     this.officeId,
     this.attendanceClock,
     this.attendanceClockOut,
@@ -51,7 +51,7 @@ class DetailPresence {
   });
 
   int? id;
-  String? employeeId;
+  String? nip;
   String? officeId;
   String? attendanceClock;
   String? attendanceClockOut;
@@ -65,7 +65,7 @@ class DetailPresence {
 
   factory DetailPresence.fromJson(Map<String, dynamic> json) => DetailPresence(
         id: json["id"],
-        employeeId: json["employee_id"],
+        nip: json["nip"],
         officeId: json["office_id"],
         attendanceClock: json["attendance_clock"],
         attendanceClockOut: json["attendance_clock_out"],

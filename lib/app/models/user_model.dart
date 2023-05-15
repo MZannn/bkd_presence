@@ -39,7 +39,7 @@ class Data {
 
 class Presence {
   int? id;
-  String? employeeId;
+  String? nip;
   String? officeId;
   String? attendanceClock;
   String? attendanceClockOut;
@@ -53,7 +53,7 @@ class Presence {
 
   Presence({
     this.id,
-    this.employeeId,
+    this.nip,
     this.officeId,
     this.attendanceClock,
     this.attendanceClockOut,
@@ -68,7 +68,7 @@ class Presence {
 
   factory Presence.fromJson(Map<String, dynamic> json) => Presence(
         id: json["id"],
-        employeeId: json["employee_id"],
+        nip: json["nip"],
         officeId: json["office_id"],
         attendanceClock: json["attendance_clock"],
         attendanceClockOut: json["attendance_clock_out"],
@@ -122,6 +122,10 @@ class Office {
   String? latitude;
   String? longitude;
   String? radius;
+  String? startWork;
+  String? startBreak;
+  String? lateTolerance;
+  String? endWork;
 
   Office({
     this.id,
@@ -130,6 +134,10 @@ class Office {
     this.latitude,
     this.longitude,
     this.radius,
+    this.startWork,
+    this.startBreak,
+    this.lateTolerance,
+    this.endWork,
   });
 
   factory Office.fromJson(Map<String, dynamic> json) => Office(
@@ -139,5 +147,9 @@ class Office {
         latitude: json["latitude"],
         longitude: json["longitude"],
         radius: json["radius"],
+        startWork: json["start_work"],
+        startBreak: json["start_break"],
+        lateTolerance: json["late_tolerance"],
+        endWork: json["end_work"],
       );
 }

@@ -107,10 +107,12 @@ class DetailPresenceView extends GetView<DetailPresenceController> {
                                 'Lokasi Kehadiran : ',
                                 style: textTheme.labelSmall,
                               ),
-                              Text(
-                                state?.data?.detailPresence?.entryPosition ??
-                                    "-",
-                                style: textTheme.labelSmall,
+                              Flexible(
+                                child: Text(
+                                  state?.data?.detailPresence?.entryPosition ??
+                                      "-",
+                                  style: textTheme.labelSmall,
+                                ),
                               ),
                             ],
                           ),
@@ -186,10 +188,12 @@ class DetailPresenceView extends GetView<DetailPresenceController> {
                                 'Lokasi Kehadiran : ',
                                 style: textTheme.labelSmall,
                               ),
-                              Text(
-                                state?.data?.detailPresence?.exitPosition ??
-                                    "-",
-                                style: textTheme.labelSmall,
+                              Flexible(
+                                child: Text(
+                                  state?.data?.detailPresence?.exitPosition ??
+                                      "-",
+                                  style: textTheme.labelSmall,
+                                ),
                               ),
                             ],
                           ),

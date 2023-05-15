@@ -42,7 +42,7 @@ class HomeView extends GetView<HomeController> {
                 Obx(
                   () {
                     if (controller.isLoading.value == true) {
-                      return const SizedBox();
+                      return const HomeLoading();
                     }
                     return Stack(
                       children: [
@@ -183,9 +183,11 @@ class HomeView extends GetView<HomeController> {
                                                       .maxAttendanceDistance *
                                                   1000, // convert ke meter
                                               strokeWidth: 1,
-                                              strokeColor: Colors.green,
-                                              fillColor:
-                                                  Colors.blue.withOpacity(0.1),
+                                              strokeColor:
+                                                  ColorConstants.mainColor,
+                                              fillColor: ColorConstants
+                                                  .mainColor
+                                                  .withOpacity(0.1),
                                             ),
                                           },
                                           onCameraMove: (position) {
@@ -722,14 +724,14 @@ class HomeView extends GetView<HomeController> {
             await controller.presenceOutChecker();
           },
           elevation: 0,
-          backgroundColor: controller.now.isAfter(controller.clockOut) &&
+          backgroundColor: controller.now.value.isAfter(controller.clockOut) &&
                   controller
                           .user?.data?.presences?.first.attendanceEntryStatus !=
                       null
               ? ColorConstants.mainColor
               : ColorConstants.greyColor,
           child: SvgPicture.asset(
-              "assets/icons/${controller.now.isAfter(controller.clockOut) && controller.user?.data?.presences?.first.attendanceEntryStatus != null ? 'presence.svg' : 'presence_disabled.svg'}"),
+              "assets/icons/${controller.now.value.isAfter(controller.clockOut) && controller.user?.data?.presences?.first.attendanceEntryStatus != null ? 'presence.svg' : 'presence_disabled.svg'}"),
         );
       }),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
