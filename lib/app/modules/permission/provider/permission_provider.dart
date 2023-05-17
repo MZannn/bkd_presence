@@ -15,7 +15,8 @@ class PermissionProvider {
       'nip': body['nip'],
       'office_id': body['office_id'],
       'presence_id': body['presence_id'],
-      'date': body['date'],
+      'start_date': body['start_date'],
+      'end_date': body['end_date'],
     });
     form.files.add(
       MapEntry(

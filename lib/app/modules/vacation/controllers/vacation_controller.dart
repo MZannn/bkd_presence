@@ -27,7 +27,7 @@ class VacationController extends GetxController {
       context: context,
       initialDate: DateTime.now(),
       firstDate: DateTime.now(),
-      lastDate: DateTime(2025),
+      lastDate: DateTime(DateTime.now().year + 5),
     );
     if (picked != null) {
       String formattedDate = DateFormat('yyyy-MM-dd').format(picked);
@@ -50,7 +50,7 @@ class VacationController extends GetxController {
       context: context,
       initialDate: DateTime.now(),
       firstDate: DateTime.now(),
-      lastDate: DateTime(2025),
+      lastDate: DateTime(DateTime.now().year + 5),
     );
     if (picked != null) {
       String formattedDate = DateFormat('yyyy-MM-dd').format(picked);
@@ -186,5 +186,13 @@ class VacationController extends GetxController {
     endDateController = TextEditingController();
     reasonController = TextEditingController();
     super.onInit();
+  }
+
+  @override
+  void onClose() {
+    startDateController.dispose();
+    endDateController.dispose();
+    reasonController.dispose();
+    super.onClose();
   }
 }

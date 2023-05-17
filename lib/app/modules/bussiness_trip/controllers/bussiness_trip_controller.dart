@@ -27,7 +27,7 @@ class BussinessTripController extends GetxController {
       context: context,
       initialDate: DateTime.now(),
       firstDate: DateTime.now(),
-      lastDate: DateTime(2025),
+      lastDate: DateTime(DateTime.now().year + 5),
     );
     if (picked != null) {
       String formattedDate = DateFormat('yyyy-MM-dd').format(picked);
@@ -50,7 +50,7 @@ class BussinessTripController extends GetxController {
       context: context,
       initialDate: DateTime.now(),
       firstDate: DateTime.now(),
-      lastDate: DateTime(2025),
+      lastDate: DateTime(DateTime.now().year + 5),
     );
     if (picked != null) {
       String formattedDate = DateFormat('yyyy-MM-dd').format(picked);
@@ -229,5 +229,14 @@ class BussinessTripController extends GetxController {
     endTimeController = TextEditingController(text: "");
     super.onInit();
     isLoading.value = false;
+  }
+
+  @override
+  void onClose() {
+    startDateController.dispose();
+    endDateController.dispose();
+    startTimeController.dispose();
+    endTimeController.dispose();
+    super.onClose();
   }
 }

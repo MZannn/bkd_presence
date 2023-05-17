@@ -28,7 +28,6 @@ class HomeController extends GetxController with StateMixin<UserModel> {
   late DateTime maximalLate;
   late DateTime attendanceStartHour;
 
-  late Duration difference;
   late CameraPosition cameraPosition;
   UserModel? user;
 
@@ -65,7 +64,7 @@ class HomeController extends GetxController with StateMixin<UserModel> {
     return 12742 * asin(sqrt(a)); // 2 * R; R = 6371 km
   }
 
-  void checkLocationChanges() {
+  checkLocationChanges() async {
     Geolocator.getPositionStream(
         locationSettings: AndroidSettings(
       accuracy: LocationAccuracy.high,
@@ -334,8 +333,8 @@ class HomeController extends GetxController with StateMixin<UserModel> {
     Timer.periodic(const Duration(seconds: 1), (timer) {
       now.value = now.value.add(const Duration(seconds: 1));
     });
-    checkLocationChanges();
     await determinePosition();
+    await checkLocationChanges();
     isLoading.value = false;
     super.onInit();
   }

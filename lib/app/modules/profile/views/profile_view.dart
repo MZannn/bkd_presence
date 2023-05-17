@@ -165,7 +165,6 @@ class ProfileView extends GetView<ProfileController> {
                             'nip': user?.data?.user?.nip,
                             'office_id': user?.data?.user?.officeId,
                             'presence_id': user?.data?.presences?.first.id,
-                            'date': user?.data?.presences?.first.presenceDate,
                           });
                         },
                         child: Row(
