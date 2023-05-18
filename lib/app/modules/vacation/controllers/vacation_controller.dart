@@ -19,7 +19,13 @@ class VacationController extends GetxController {
   RxString fileName = ''.obs;
   RxBool isLoading = false.obs;
   File? file;
-
+  List<String> leaveTypeList = [
+    'Cuti Tahunan',
+    'Cuti Sakit',
+    'Cuti Bersalin',
+    'Cuti Alasan Penting'
+  ];
+  String? selectedLeaveType;
   late DateTime now;
   Future<void> selectStartDate(BuildContext context) async {
     MaterialLocalizations.of(context);
@@ -121,6 +127,7 @@ class VacationController extends GetxController {
         'presence_id': Get.arguments['presence_id'],
         'start_date': startDateController.text,
         'end_date': endDateController.text,
+        'leave_type': selectedLeaveType,
         'reason': reasonController.text,
       };
 

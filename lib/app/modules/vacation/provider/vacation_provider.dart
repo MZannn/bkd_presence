@@ -17,6 +17,7 @@ class VacationProvider {
       'presence_id': body['presence_id'],
       'start_date': body['start_date'],
       'end_date': body['end_date'],
+      'leave_type': body['leave_type'],
       'reason': body['reason'],
     });
     if (file != null) {

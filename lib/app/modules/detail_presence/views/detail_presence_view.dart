@@ -79,21 +79,23 @@ class DetailPresenceView extends GetView<DetailPresenceController> {
                                 'Status Kehadiran : ',
                                 style: textTheme.labelSmall,
                               ),
-                              Text(
-                                state?.data?.detailPresence
-                                        ?.attendanceEntryStatus
-                                        ?.toUpperCase() ??
-                                    "-",
-                                style: state?.data?.detailPresence
-                                            ?.attendanceEntryStatus ==
-                                        "TERLAMBAT"
-                                    ? textTheme.labelSmall!.copyWith(
-                                        color: ColorConstants.redColor,
-                                        fontWeight: FontWeight.w700,
-                                      )
-                                    : textTheme.labelSmall!.copyWith(
-                                        fontWeight: FontWeight.w700,
-                                      ),
+                              Flexible(
+                                child: Text(
+                                  state?.data?.detailPresence
+                                          ?.attendanceEntryStatus
+                                          ?.toUpperCase() ??
+                                      "-",
+                                  style: state?.data?.detailPresence
+                                              ?.attendanceEntryStatus ==
+                                          "TERLAMBAT"
+                                      ? textTheme.labelSmall!.copyWith(
+                                          color: ColorConstants.redColor,
+                                          fontWeight: FontWeight.w700,
+                                        )
+                                      : textTheme.labelSmall!.copyWith(
+                                          fontWeight: FontWeight.w700,
+                                        ),
+                                ),
                               ),
                             ],
                           ),
@@ -167,13 +169,15 @@ class DetailPresenceView extends GetView<DetailPresenceController> {
                                 'Status Kehadiran : ',
                                 style: textTheme.labelSmall,
                               ),
-                              Text(
-                                state?.data?.detailPresence
-                                        ?.attendanceExitStatus
-                                        ?.toUpperCase() ??
-                                    "-",
-                                style: textTheme.labelSmall!.copyWith(
-                                  fontWeight: FontWeight.w700,
+                              Flexible(
+                                child: Text(
+                                  state?.data?.detailPresence
+                                          ?.attendanceExitStatus
+                                          ?.toUpperCase() ??
+                                      "-",
+                                  style: textTheme.labelSmall!.copyWith(
+                                    fontWeight: FontWeight.w700,
+                                  ),
                                 ),
                               ),
                             ],

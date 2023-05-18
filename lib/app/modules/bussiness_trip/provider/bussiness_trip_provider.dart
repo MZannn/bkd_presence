@@ -22,8 +22,6 @@ class BussinessTripProvider extends GetConnect {
       'presence_id': body['presence_id'],
       'start_date': body['start_date'],
       'end_date': body['end_date'],
-      'start_time': body['start_time'],
-      'end_time': body['end_time'],
     });
     if (file != null) {
       form.files.add(

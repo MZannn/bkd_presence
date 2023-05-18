@@ -14,8 +14,6 @@ class BussinessTripController extends GetxController {
   final BussinessTripProvider _bussinessTripProvider;
   late TextEditingController startDateController;
   late TextEditingController endDateController;
-  late TextEditingController startTimeController;
-  late TextEditingController endTimeController;
   RxString fileName = ''.obs;
   RxBool isLoading = false.obs;
   File? file;
@@ -65,32 +63,6 @@ class BussinessTripController extends GetxController {
         borderRadius: 10,
         duration: const Duration(seconds: 3),
       );
-    }
-  }
-
-  Future<void> selectStartTime(BuildContext context) async {
-    final TimeOfDay? picked = await showTimePicker(
-      context: context,
-      initialTime: TimeOfDay.now(),
-    );
-    if (picked != null) {
-      String formattedTime = DateFormat("HH:mm:ss").format(
-          DateTime(now.year, now.month, now.day, picked.hour, picked.minute));
-      startTimeController.text = formattedTime;
-      update();
-    }
-  }
-
-  Future<void> selectEndTime(BuildContext context) async {
-    final TimeOfDay? picked = await showTimePicker(
-      context: context,
-      initialTime: TimeOfDay.now(),
-    );
-    if (picked != null) {
-      String formattedTime = DateFormat("HH:mm:ss").format(
-          DateTime(now.year, now.month, now.day, picked.hour, picked.minute));
-      endTimeController.text = formattedTime;
-      update();
     }
   }
 
@@ -158,8 +130,6 @@ class BussinessTripController extends GetxController {
         'presence_id': Get.arguments['presence_id'],
         'start_date': startDateController.text,
         'end_date': endDateController.text,
-        'start_time': startTimeController.text,
-        'end_time': endTimeController.text,
       };
 
       final response =
@@ -223,10 +193,8 @@ class BussinessTripController extends GetxController {
   void onInit() async {
     isLoading.value = true;
     now = await fetchTime();
-    startDateController = TextEditingController(text: "");
-    endDateController = TextEditingController(text: "");
-    startTimeController = TextEditingController(text: "");
-    endTimeController = TextEditingController(text: "");
+    startDateController = TextEditingController();
+    endDateController = TextEditingController();
     super.onInit();
     isLoading.value = false;
   }
@@ -235,8 +203,6 @@ class BussinessTripController extends GetxController {
   void onClose() {
     startDateController.dispose();
     endDateController.dispose();
-    startTimeController.dispose();
-    endTimeController.dispose();
     super.onClose();
   }
 }
