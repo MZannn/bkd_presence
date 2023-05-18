@@ -64,7 +64,7 @@ class HomeController extends GetxController with StateMixin<UserModel> {
     return 12742 * asin(sqrt(a)); // 2 * R; R = 6371 km
   }
 
-  checkLocationChanges() async {
+  checkLocationChanges() {
     Geolocator.getPositionStream(
         locationSettings: AndroidSettings(
       accuracy: LocationAccuracy.high,
@@ -333,8 +333,11 @@ class HomeController extends GetxController with StateMixin<UserModel> {
     Timer.periodic(const Duration(seconds: 1), (timer) {
       now.value = now.value.add(const Duration(seconds: 1));
     });
-    await determinePosition();
-    await checkLocationChanges();
+    checkLocationChanges();
+    await determinePosition().then((value) {
+      cameraPosition = CameraPosition(
+          target: LatLng(latitude.value, longitude.value), zoom: 16);
+    });
     isLoading.value = false;
     super.onInit();
   }
