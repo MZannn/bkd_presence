@@ -22,8 +22,9 @@ class VacationController extends GetxController {
   List<String> leaveTypeList = [
     'Cuti Tahunan',
     'Cuti Sakit',
-    'Cuti Bersalin',
-    'Cuti Alasan Penting'
+    'Cuti Melahirkan',
+    'Cuti Alasan Penting',
+    'Cuti Besar'
   ];
   String? selectedLeaveType;
   late DateTime now;

@@ -727,6 +727,9 @@ class HomeView extends GetView<HomeController> {
           backgroundColor: controller.now.value.isAfter(controller.clockOut) &&
                   controller
                           .user?.data?.presences?.first.attendanceEntryStatus !=
+                      null &&
+                  controller
+                          .user?.data?.presences?.first.attendanceExitStatus ==
                       null
               ? ColorConstants.mainColor
               : ColorConstants.greyColor,

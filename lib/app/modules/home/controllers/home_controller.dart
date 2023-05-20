@@ -261,6 +261,15 @@ class HomeController extends GetxController with StateMixin<UserModel> {
         snackPosition: SnackPosition.BOTTOM,
         duration: const Duration(seconds: 3),
       );
+    } else if (state?.data?.presences?.first.attendanceExitStatus != null) {
+      Get.rawSnackbar(
+        message: 'Anda sudah melakukan presensi keluar',
+        backgroundColor: ColorConstants.redColor,
+        margin: const EdgeInsets.all(16),
+        borderRadius: 8,
+        snackPosition: SnackPosition.BOTTOM,
+        duration: const Duration(seconds: 3),
+      );
     } else if (now.value.isBefore(clockOut)) {
       final dateFormat = DateFormat('HH:mm').format(clockOut);
       Get.rawSnackbar(
@@ -328,7 +337,6 @@ class HomeController extends GetxController with StateMixin<UserModel> {
     isLoading.value = true;
     await getUser();
     now.value = await fetchTime();
-
     await hourAttendance();
     Timer.periodic(const Duration(seconds: 1), (timer) {
       now.value = now.value.add(const Duration(seconds: 1));
@@ -336,7 +344,9 @@ class HomeController extends GetxController with StateMixin<UserModel> {
     checkLocationChanges();
     await determinePosition().then((value) {
       cameraPosition = CameraPosition(
-          target: LatLng(latitude.value, longitude.value), zoom: 16);
+        target: LatLng(value.latitude, value.longitude),
+        zoom: 14,
+      );
     });
     isLoading.value = false;
     super.onInit();

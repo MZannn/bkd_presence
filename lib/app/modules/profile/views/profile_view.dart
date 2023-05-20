@@ -159,32 +159,32 @@ class ProfileView extends GetView<ProfileController> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      InkWell(
-                        onTap: () {
-                          Get.toNamed(Routes.permission, arguments: {
-                            'nip': user?.data?.user?.nip,
-                            'office_id': user?.data?.user?.officeId,
-                            'presence_id': user?.data?.presences?.first.id,
-                          });
-                        },
-                        child: Row(
-                          children: [
-                            const Icon(Icons.coronavirus),
-                            const SizedBox(
-                              width: 12,
-                            ),
-                            Text(
-                              "Izin atau Sakit",
-                              style: textTheme.bodyLarge!.copyWith(
-                                color: const Color(0xFF383838),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      const SizedBox(
-                        height: 16,
-                      ),
+                      // InkWell(
+                      //   onTap: () {
+                      //     Get.toNamed(Routes.permission, arguments: {
+                      //       'nip': user?.data?.user?.nip,
+                      //       'office_id': user?.data?.user?.officeId,
+                      //       'presence_id': user?.data?.presences?.first.id,
+                      //     });
+                      //   },
+                      //   child: Row(
+                      //     children: [
+                      //       const Icon(Icons.coronavirus),
+                      //       const SizedBox(
+                      //         width: 12,
+                      //       ),
+                      //       Text(
+                      //         "Izin atau Sakit",
+                      //         style: textTheme.bodyLarge!.copyWith(
+                      //           color: const Color(0xFF383838),
+                      //         ),
+                      //       ),
+                      //     ],
+                      //   ),
+                      // ),
+                      // const SizedBox(
+                      //   height: 16,
+                      // ),
                       InkWell(
                         onTap: () {
                           Get.toNamed(Routes.bussinessTrip, arguments: {

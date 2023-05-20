@@ -330,7 +330,6 @@ class VacationView extends GetView<VacationController> {
                       } else if (formKey.currentState!.validate() &&
                           controller.fileName.value != '' &&
                           controller.selectedLeaveType != '') {
-                        print(controller.selectedLeaveType);
                         controller.vacation();
                       }
                     },
