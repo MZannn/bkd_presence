@@ -734,7 +734,7 @@ class HomeView extends GetView<HomeController> {
               ? ColorConstants.mainColor
               : ColorConstants.greyColor,
           child: SvgPicture.asset(
-              "assets/icons/${controller.now.value.isAfter(controller.clockOut) && controller.user?.data?.presences?.first.attendanceEntryStatus != null ? 'presence.svg' : 'presence_disabled.svg'}"),
+              "assets/icons/${controller.now.value.isAfter(controller.clockOut) && controller.user?.data?.presences?.first.attendanceEntryStatus != null && controller.user?.data?.presences?.first.attendanceExitStatus == null ? 'presence.svg' : 'presence_disabled.svg'}"),
         );
       }),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
