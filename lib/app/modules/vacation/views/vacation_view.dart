@@ -147,9 +147,10 @@ class VacationView extends GetView<VacationController> {
                     ),
                     Expanded(
                       child: DropdownButtonFormField<String>(
-                        items: controller.leaveTypeList.map((e) {
+                        items: Get.arguments['leave_rules']
+                            .map<DropdownMenuItem<String>>((dynamic item) {
                           return DropdownMenuItem<String>(
-                              value: e, child: Text(e));
+                              value: item, child: Text(item));
                         }).toList(),
                         value: controller.selectedLeaveType,
                         onChanged: (value) {

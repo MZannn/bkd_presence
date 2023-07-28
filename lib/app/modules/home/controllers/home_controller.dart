@@ -309,6 +309,7 @@ class HomeController extends GetxController with StateMixin<UserModel> {
   Future hourAttendance() async {
     final dateFormat = DateFormat('yyyy-MM-dd');
     var today = dateFormat.format(now.value);
+    print(state!.data!.user!.office!.startWork!);
     DateTime startHour =
         DateTime.parse('$today ${state!.data!.user!.office!.startWork!}');
     DateTime startBreakHour =
@@ -337,10 +338,11 @@ class HomeController extends GetxController with StateMixin<UserModel> {
     isLoading.value = true;
     await getUser();
     now.value = await fetchTime();
-    await hourAttendance();
+    // await hourAttendance();
     Timer.periodic(const Duration(seconds: 1), (timer) {
       now.value = now.value.add(const Duration(seconds: 1));
     });
+    clockOut = DateTime.now();
     checkLocationChanges();
     await determinePosition().then((value) {
       cameraPosition = CameraPosition(

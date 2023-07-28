@@ -22,10 +22,12 @@ class UserModel {
 class Data {
   User? user;
   List<Presence>? presences;
+  List<dynamic>? leaveRules;
 
   Data({
     this.user,
     this.presences,
+    this.leaveRules,
   });
 
   factory Data.fromJson(Map<String, dynamic> json) => Data(
@@ -34,6 +36,7 @@ class Data {
             ? []
             : List<Presence>.from(
                 json["presences"]!.map((x) => Presence.fromJson(x))),
+        leaveRules: json["leaveRules"],
       );
 }
 
