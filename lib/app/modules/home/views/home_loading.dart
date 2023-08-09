@@ -18,33 +18,33 @@ class HomeLoading extends StatelessWidget {
         SafeArea(
           child: ListView(
             children: [
-              Padding(
-                padding: const EdgeInsets.only(
-                    top: 24, left: 16, bottom: 16, right: 16),
+              const Padding(
+                padding:
+                    EdgeInsets.only(top: 24, left: 16, bottom: 16, right: 16),
                 child: Column(
                   children: [
-                    const SizedBox(
+                    SizedBox(
                       height: 24,
                       child: ShimmerLoading(),
                     ),
-                    const SizedBox(
+                    SizedBox(
                       height: 12,
                     ),
                     Row(
                       children: [
-                        const SizedBox(
+                        SizedBox(
                           width: 60,
                           height: 60,
                           child: ShimmerLoading(
                             shape: ShimmerShape.circle,
                           ),
                         ),
-                        const SizedBox(
+                        SizedBox(
                           width: 16,
                         ),
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
-                          children: const [
+                          children: [
                             SizedBox(
                               width: 100,
                               height: 20,
@@ -99,14 +99,14 @@ class HomeLoading extends StatelessWidget {
                           ),
                         ],
                       ),
-                      child: Column(
+                      child: const Column(
                         children: [
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
-                                children: const [
+                                children: [
                                   SizedBox(
                                     height: 12,
                                     width: 50,
@@ -122,14 +122,14 @@ class HomeLoading extends StatelessWidget {
                                   ),
                                 ],
                               ),
-                              const SizedBox(
+                              SizedBox(
                                 width: 100,
                                 height: 10,
                                 child: ShimmerLoading(),
                               ),
                             ],
                           ),
-                          const SizedBox(
+                          SizedBox(
                             height: 10,
                           ),
                           Row(
@@ -137,7 +137,7 @@ class HomeLoading extends StatelessWidget {
                             children: [
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
-                                children: const [
+                                children: [
                                   SizedBox(
                                     height: 12,
                                     width: 50,
@@ -153,7 +153,7 @@ class HomeLoading extends StatelessWidget {
                                   ),
                                 ],
                               ),
-                              const SizedBox(
+                              SizedBox(
                                 width: 100,
                                 height: 10,
                                 child: ShimmerLoading(),
@@ -166,9 +166,9 @@ class HomeLoading extends StatelessWidget {
                     const SizedBox(
                       height: 12,
                     ),
-                    Row(
+                    const Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: const [
+                      children: [
                         SizedBox(
                           height: 12,
                           width: 150,
@@ -198,14 +198,14 @@ class HomeLoading extends StatelessWidget {
                           ),
                         ],
                       ),
-                      child: Column(
+                      child: const Column(
                         children: [
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
-                                children: const [
+                                children: [
                                   SizedBox(
                                     height: 12,
                                     width: 50,
@@ -221,14 +221,14 @@ class HomeLoading extends StatelessWidget {
                                   ),
                                 ],
                               ),
-                              const SizedBox(
+                              SizedBox(
                                 width: 100,
                                 height: 10,
                                 child: ShimmerLoading(),
                               ),
                             ],
                           ),
-                          const SizedBox(
+                          SizedBox(
                             height: 10,
                           ),
                           Row(
@@ -236,7 +236,7 @@ class HomeLoading extends StatelessWidget {
                             children: [
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
-                                children: const [
+                                children: [
                                   SizedBox(
                                     height: 12,
                                     width: 50,
@@ -252,7 +252,7 @@ class HomeLoading extends StatelessWidget {
                                   ),
                                 ],
                               ),
-                              const SizedBox(
+                              SizedBox(
                                 width: 100,
                                 height: 10,
                                 child: ShimmerLoading(),
@@ -279,14 +279,14 @@ class HomeLoading extends StatelessWidget {
                           ),
                         ],
                       ),
-                      child: Column(
+                      child: const Column(
                         children: [
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
-                                children: const [
+                                children: [
                                   SizedBox(
                                     height: 12,
                                     width: 50,
@@ -302,14 +302,14 @@ class HomeLoading extends StatelessWidget {
                                   ),
                                 ],
                               ),
-                              const SizedBox(
+                              SizedBox(
                                 width: 100,
                                 height: 10,
                                 child: ShimmerLoading(),
                               ),
                             ],
                           ),
-                          const SizedBox(
+                          SizedBox(
                             height: 10,
                           ),
                           Row(
@@ -317,7 +317,7 @@ class HomeLoading extends StatelessWidget {
                             children: [
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
-                                children: const [
+                                children: [
                                   SizedBox(
                                     height: 12,
                                     width: 50,
@@ -333,7 +333,7 @@ class HomeLoading extends StatelessWidget {
                                   ),
                                 ],
                               ),
-                              const SizedBox(
+                              SizedBox(
                                 width: 100,
                                 height: 10,
                                 child: ShimmerLoading(),

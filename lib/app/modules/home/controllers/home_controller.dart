@@ -30,7 +30,7 @@ class HomeController extends GetxController with StateMixin<UserModel> {
 
   late CameraPosition cameraPosition;
   UserModel? user;
-
+  // mengecek posisi user
   Future<Position> determinePosition() async {
     bool serviceEnabled;
     LocationPermission permission;
@@ -126,6 +126,7 @@ class HomeController extends GetxController with StateMixin<UserModel> {
     });
   }
 
+  // send attendance in to server
   Future sendAttendanceToServer(
       int id, Position position, String entryStatus) async {
     final attendanceClock = DateFormat('HH:mm:ss').format(now.value);
@@ -145,6 +146,7 @@ class HomeController extends GetxController with StateMixin<UserModel> {
     return presence;
   }
 
+  // send attendance out to server
   presenceOut() async {
     final userPresence = state?.data?.presences?.first;
     final exitDistance = calculateDistance(Constants.latitude,
@@ -184,6 +186,7 @@ class HomeController extends GetxController with StateMixin<UserModel> {
     }
   }
 
+  // get user data
   getUser() async {
     change(null, status: RxStatus.loading());
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -220,6 +223,7 @@ class HomeController extends GetxController with StateMixin<UserModel> {
     }
   }
 
+  // format date to indonesian format
   Future<String> formatDate(String date) async {
     DateTime dateTime = DateTime.parse(date);
     String formattedDate =
@@ -228,6 +232,7 @@ class HomeController extends GetxController with StateMixin<UserModel> {
     return formattedDate;
   }
 
+  // format time to indonesian format
   Future<DateTime> fetchTime() async {
     var response = await _homeProvider.fetchTime();
     var dateTimeString = response['dateTime'];
@@ -239,6 +244,7 @@ class HomeController extends GetxController with StateMixin<UserModel> {
     return formattedDateTime;
   }
 
+  // presence in checker
   Future<void> presenceOutChecker() async {
     var distance = calculateDistance(Constants.latitude, Constants.longitude,
         latitude.value, longitude.value);
@@ -306,10 +312,10 @@ class HomeController extends GetxController with StateMixin<UserModel> {
     }
   }
 
+  // parsing hour attendance
   Future hourAttendance() async {
     final dateFormat = DateFormat('yyyy-MM-dd');
     var today = dateFormat.format(now.value);
-    print(state!.data!.user!.office!.startWork!);
     DateTime startHour =
         DateTime.parse('$today ${state!.data!.user!.office!.startWork!}');
     DateTime startBreakHour =
@@ -338,7 +344,7 @@ class HomeController extends GetxController with StateMixin<UserModel> {
     isLoading.value = true;
     await getUser();
     now.value = await fetchTime();
-    // await hourAttendance();
+    await hourAttendance();
     Timer.periodic(const Duration(seconds: 1), (timer) {
       now.value = now.value.add(const Duration(seconds: 1));
     });
